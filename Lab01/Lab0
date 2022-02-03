@@ -1,0 +1,137 @@
+Task 0:
+wtownsend2@hpcl3-5:~$
+
+Task 1:
+cd /usr/include
+
+Task 2:
+cd ../dev/bin/ls
+
+Task 3:
+Nothing to write
+
+Task 4:
+
+1.
+drwxr-xr-x  2 wtownsend2 users 4096 Sep 21 12:37 abs
+drwx------  2 wtownsend2 users 4096 Sep  7 11:38 bin
+drwxr-xr-x  8 wtownsend2 users 4096 Mar  6  2020 COSC220
+drwxr-xr-x 15 wtownsend2 users 4096 Feb  3 10:36 COSC350
+drwxr-xr-x  2 wtownsend2 users 4096 Feb  1 14:39 Desktop
+drwxr-xr-x  2 wtownsend2 users 4096 Mar  3  2020 Documents
+drwxr-xr-x  2 wtownsend2 users 4096 Oct 18 08:24 Downloads
+drwxr-xr-x  2 wtownsend2 users 4096 Jan 31  2020 Music
+drwxr-xr-x  2 wtownsend2 users 4096 Jan 31  2020 Pictures
+drwxr-xr-x  2 wtownsend2 users 4096 Jan 31  2020 Public
+drwxr-xr-x  3 wtownsend2 users 4096 Dec  8 09:38 RemoteGithub
+drwxr-xr-x  2 wtownsend2 users 4096 Jan 31  2020 Templates
+drwxr-xr-x  2 wtownsend2 users 4096 Jan 31  2020 Videos
+
+2. users students
+
+3a. wtownsend2
+3b. read write execute
+3c. students
+3d. read execute
+3e. No
+3f. read execute
+
+Task 5:
+2a. read write
+2b. wtownsend2
+2c. None
+2d. No
+2e. None
+
+3. chmod 125 ~/foo
+
+Task 6:
+2.
+ls -a: do not ignore entries starting with .
+ls -l: use a long listing format
+ls -R: list subdirectories recursively
+
+3. ls -a includes everything that ls displayed but includes files that begin with .
+
+4. 
+time(1) - run programs and summarize system resource usage
+time(2) - get time in seconds
+
+Task 7:
+Nothing to write
+
+Task 8:
+//hello.cpp
+//Demo file COSC350 Lab1
+//
+//Will Townsend
+//Created: 02/03/2022
+//Current: 02/03/2022
+
+#include<iostream>
+
+int main(){
+        std::cout<<"Hello World"<<std::endl;
+        return 0;
+}
+
+Output: 
+Hello World
+
+Task 9:
+
+  // file1.cpp
+  // Contains the main function
+  // Demo file COSC350 Lab1
+  //
+  // Will Townsend
+  // Created: 02/03/2022
+  // Current: 02/03/2022
+
+  #include <iostream>
+  #include "file2.h"
+
+  int main()
+  {
+    using namespace std;
+    int i = 3;
+    int sq;
+
+    sq = SquareIt(i);
+    cout << "Square of " << i << " is " << sq << endl;
+    return 0;
+  }
+
+  //file2.h
+  //Demo file COSC350 Lab1
+  // Declaration of SquareIt function
+  //
+  //Will Townsend
+  //Created: 02/03/2022
+  //Current: 02/03/2022
+  #ifndef FILE2_H
+  #define FILE2_H
+
+    int SquareIt(int);
+
+  #endif
+
+  //file2.cpp
+  //Demo file COSC350 Lab1
+  //Definition of SquareIt function
+  //
+  //Will Townsend
+  //Created: 02/03/2022
+  //Current: 02/03/2022
+
+  #include "file2.h"
+
+  int SquareIt(int x){
+          return x * x;
+  }
+
+Output:
+Square of 3 is 9
+
+
+
