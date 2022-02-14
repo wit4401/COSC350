@@ -1,25 +1,53 @@
 #!/bin/bash
-contin=yes
 file=save.text
+option='A'
 
-function insert{
+function DisplayMenu {
+    echo '----------------------------------------------------------------------------------------'
+    echo 'A'
+    echo 'B'
+    echo 'C'
+    echo 'D'
+    echo 'E'
+    echo 'X'
 }
 
-function delete{
+function insert {
+    echo 'shit'
 }
 
-function modify{
+function delete {
+    echo 'shit'
 }
 
-function retrieve{
+function modify {
+    echo 'shit'
 }
 
-while [$contin -eq "yes"]
+function retrieve {
+    echo 'shit'
+}
+
+function printDatabase {
+    echo 'shit'
+}
+
+while [ $option == 'A' ] || [ $option == 'B' ] || [ $option == 'C' ] || [ $option == 'D' ] || [ $option == 'E' ]
 do
-    option=0;
+    option='N'
+    DisplayMenu
     read $option
-    if [$option -eq "X"]
-        contin=no
+    if [ $option == 'A' ]; then
+        insert
+    elif [ $option == 'B' ]; then
+        modify
+    elif [ $option == 'C' ]; then
+        delete
+    elif [ $option == 'D' ]; then
+        retrieve
+    elif [ $option == 'E' ]; then
+        display
+    fi
 done
 
 exit 0 
