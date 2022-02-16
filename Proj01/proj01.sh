@@ -17,29 +17,50 @@ function DisplayMenu {
 
 function insert {
     echo 'shit'
+    echo '-------------------------------'
 }
 
 function delete {
     echo 'shit'
+    echo '-------------------------------'
 }
 
 function modify {
     echo 'shit'
+    echo '-------------------------------'
 }
 
 function retrieve {
     echo 'shit'
+    echo '-------------------------------'
 }
 
 function printDatabase {
     echo 'shit'
+    echo '-------------------------------'
 }
 
-while [ $option != 'X' ]
+while [ $option != 'X' ] && [ $option != 'x' ]
 do
     DisplayMenu
     read option
     echo '-------------------------------'
+    case $option in
+        a|A)
+            insert ;;
+        b|B)
+            modify ;;
+        c|C)
+            delete ;;
+        d|D)
+            retrieve ;;
+        e|E)
+            printDatabase ;;
+        x|X)
+            echo 'Exiting Program...';;
+        *)
+            echo 'Invalid Input'
+            echo '-------------------------------';;
+    esac
 done
-
 exit 0 
