@@ -1,6 +1,5 @@
 #!/bin/bash
 
-num=0;
 echo "Task 7:"
 echo -n "Enter a value: "
 read num
@@ -10,7 +9,7 @@ res=1
 
 while [ $num -gt 1 ]
 do
-    res=$((num*res))
+    res=`expr $res \* $num`
     let num--
 done
 echo "$res"
