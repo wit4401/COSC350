@@ -25,11 +25,12 @@ done
 
 tail=`expr $base + $tail`
 half=`expr $base / 2`
-for i in `seq $half -1 1`;do
-    for j in `seq 1 $i`;do
+for i in `seq  1 $half`;do
+space=`expr $base - 2 \* $i`
+    for j in `seq 1 $space`;do
         echo -n ' '
     done
-    star=`expr $half - $i + 1`
+    star=`expr 2 \* $i - 1`
     for j in `seq 1 $star`;do
         echo -n '*'
     done
@@ -38,12 +39,13 @@ done
 for i in `seq 1 $tail`;do
     echo -n '*'
 done
-echo
-for i in `seq 1 $half`;do
-    for j in `seq 1 $i`;do
+echo 
+for i in `seq $half -1 1`;do
+    space=`expr $base - 2 \* $i`
+    for j in `seq 1 $space`;do
         echo -n ' '
     done
-    star=`expr $half - $i + 1`
+    star=`expr 2 \* $i - 1`
     for j in `seq 1 $star`;do
         echo -n '*'
     done
