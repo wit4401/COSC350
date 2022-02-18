@@ -15,11 +15,38 @@ while [ $base -lt 4 ] || [ $num -eq 0 ];do
     fi
 done
 
-while [ $tail -gt 0 ];do
+while [ $tail -le 0 ];do
     echo -n "Tail value: "
     read tail
     if [ $tail -le 0 ];then
         echo "Tail value must be positive!"
+    fi
 done
 
+tail=`expr $base + $tail`
+half=`expr $base / 2`
+for i in `seq $half -1 1`;do
+    for j in `seq 1 $i`;do
+        echo -n ' '
+    done
+    star=`expr $half - $i + 1`
+    for j in `seq 1 $star`;do
+        echo -n '*'
+    done
+    echo
+done
+for i in `seq 1 $tail`;do
+    echo -n '*'
+done
+echo
+for i in `seq 1 $half`;do
+    for j in `seq 1 $i`;do
+        echo -n ' '
+    done
+    star=`expr $half - $i + 1`
+    for j in `seq 1 $star`;do
+        echo -n '*'
+    done
+    echo
+done
 exit 0

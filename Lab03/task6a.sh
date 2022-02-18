@@ -14,4 +14,32 @@ while [ $base -lt 4 ] || [ $num -eq 0 ];do
     fi
 done
 
+half=`expr $base / 2`
+for i in `seq $half -1 1`;do
+    for j in `seq 1 $i`;do
+        echo -n ' '
+    done
+    star=`expr $half - $i`
+    star=`expr 2 \* $star + 1`
+    for j in `seq 1 $star`;do
+        echo -n '*'
+    done
+    echo ' '
+done
+for i in `seq 1 $base`;do
+    echo -n '*'
+done
+echo
+for i in `seq 1 $half`;do
+    for j in `seq 1 $i`;do
+        echo -n ' '
+    done
+    star=`expr $half - $i`
+    star=`expr 2 \* $star + 1`
+    for j in `seq 1 $star`;do
+        echo -n '*'
+    done
+    echo ' '
+done
+echo
 exit 0

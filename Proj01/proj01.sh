@@ -54,7 +54,7 @@ function modify {
     newSal='0'
     echo -n 'Please Enter the SSN of the employee to be modified: '
     read social;
-    while [ "$criteria" -ne 1 ] && [ "$criteria" -ne 2 ] && [ "$criteria" -ne 3 ] && [ "$criteria" -ne 4 ]; do
+    while [ "$search" -ne 1 ] || [ "$search" -ne 2 ] || [ "$search" -ne 3 ] || [ "$search" -ne 4 ]; do
         echo '1. Last Name'
         echo '2. First Name'
         echo '3. DOB'
