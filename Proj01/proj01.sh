@@ -4,6 +4,7 @@ option='A'
 criteria=0
 
 echo '-------------------------------'
+
 function DisplayMenu {
     echo 'Employee Database Simulator'
     echo '-------------------------------'
@@ -17,36 +18,102 @@ function DisplayMenu {
 }
 
 function insert {
-    echo -n 'Enter First Name: '
-    read first
-    echo -n 'Enter Last Name: '
-    read last
-    echo -n 'Enter SSN: '
-    read social
-    echo -n 'Enter Birthday:'
-    read birth
-    echo -n 'Enter Salary: '
-    read salary
+    local len=11;
+    touch $file
+    while [ "$len" -ne 9 ] || [ -z $social ] || grep -q "$social" $file;do
+        echo -n 'Enter SSN (Do not include "-"): '
+        read social
+        
+        len=`expr length $social`
+        three=`expr substr $social 1 3`
+        two=`expr substr $social 4 2`
+        four=`expr substr $social 6 4`
+        social="$three-$two-$four"
+        
+        if `grep -q "$social" $file`;then
+            echo "SSN Exists!"
+        elif [ $len -ne 9 ];then
+            echo "Please Enter 9 digits."
+        fi
+    done
+    
+    len=11;
+    while [ -z $first ] || [ "$len" -gt 10 ];do
+        echo -n 'Enter First Name: '
+        read first
+        len=`expr length $first`
+        if [ $len -gt 10 ];then
+            echo "Only <11 characters"
+        fi
+    done
+    
+    len=11;
+    while [ -z $last ] || [ "$len" -gt 10 ];do
+        echo -n 'Enter Last Name: '
+        read last
+        len=`expr length $last`
+        if [ $len -gt 10 ];then
+            echo "Only <11 characters"
+        fi
+    done
+    
+    len=11;
+    while [ -z $birth ] || [ $len -ne 8 ];do
+        echo -n 'Enter Birthday (MMDDYYYY): '
+        read birth
+        len=`expr length $birth`
+        if [ $len -ne 8 ];then
+            echo "8 digits are required!"
+        fi
+    done
+    month=`expr substr $birth 1 2`
+    day=`expr substr $birth 3 2`
+    year=`expr substr $birth 5 4`
+    birth="$month-$day-$year"
+    
+    local salary=-1
+    while [ "$salary" -lt 0 ];do
+        echo -n 'Enter Salary: '
+        read salary 
+        if [ "$salary" -lt 0 ];then
+            echo "Salary must be positive!"
+        fi
+    done
     echo "$first $last $social $birth $salary">>$file
     echo '-------------------------------'
 }
 
 function delete {
-    social='xx-xxx-xxxx'
-    delete='m'
-    echo -n 'Enter SSN of employee: '
-    read social
-    while [ $delete != 'n' ] && [ $delete != 'y' ]; do
-        echo -n "Are you sure you want to delete $social (y/n)? "
-        read delete
-        if [ $delete != 'n' ] && [ $delete != 'y' ]; then
-            echo 'Invalid Input'
+    if [ -f $file ];then
+        social='xx-xxx-xxxx'
+        delete='m'
+        echo -n 'Enter SSN of employee (include "-"): '
+        read social
+        local check=`grep $social $file`
+        if [ -z "$check" ];then
+            echo "SSN not found!"
+            echo '-------------------------------'
+            return 0
         fi
-    done
+        while [ "$delete" != 'n' ] && [ "$delete" != 'y' ]; do
+            echo -n "Are you sure you want to delete $social (y/n)? "
+            read delete
+            if [ "$delete" != 'n' ] && [ "$delete" != 'y' ]; then
+                echo 'Invalid Input'
+            fi
+        done
+    else
+        echo "Add to the Database before deletion!"
+    fi
     echo '-------------------------------'
 }
 
 function modify {
+    if [ ! -f $file ];then
+        echo "Add to the Database before modifying!"
+        echo '-------------------------------'
+        return 0
+    fi
     social='xx-xxx-xxxx'
     newLast='0'
     newFirst='0'
@@ -59,7 +126,7 @@ function modify {
         echo '2. First Name'
         echo '3. DOB'
         echo '4. Salary'
-        echo -n 'Please select a value: '
+        echo -n 'Please sel\3[40;37mect a value: '
         read search
         case $search in
             1)
@@ -110,6 +177,11 @@ function modify {
 }
 
 function retrieve {
+    if [ ! -f $file ];then
+        echo "Add to the Database before retrieving!"
+        echo '-------------------------------'
+        return 0
+    fi
     search=0
     while [ "$criteria" -ne 1 ] && [ "$criteria" -ne 2 ] && [ "$criteria" -ne 3 ] && [ "$criteria" -ne 4 ]; do
         echo '1. SSN'
@@ -140,12 +212,17 @@ function retrieve {
 }
 
 function printDatabase {
+    if [ ! -f $file ];then
+        echo "Nothing to Display!"
+        echo '-------------------------------'
+        return 0
+    fi
     cat $file
     echo '-------------------------------'
 }
 
 while [ "$option" != 'X' ] && [ "$option" != 'x' ]
-do
+do 
     DisplayMenu
     read option
     echo '-------------------------------'
