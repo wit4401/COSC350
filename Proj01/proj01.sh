@@ -19,6 +19,7 @@ function DisplayMenu {
 
 function insert {
     local len=11;
+    local confir='m';
     touch $file
     while [ "$len" -ne 9 ] || [ -z $social ] || grep -q "$social" $file;do
         echo -n 'Enter SSN (Do not include "-"): '
@@ -79,7 +80,24 @@ function insert {
             echo "Salary must be positive!"
         fi
     done
-    echo "$first $last $social $birth $salary">>$file
+    while [ "$confir" != 'n' ] && [ "$confir" != 'y' ]; do
+        echo
+        echo  "Are you sure you want to insert the following data?"
+        echo "$first $last $social $birth $salary"
+        echo -n "(y/n): "
+        read confir
+        if [ "$confir" != 'n' ] && [ "$confir" != 'y' ]; then
+            echo
+            echo 'Invalid Input'
+        fi
+    done
+    if [ "$confir" == y ];then
+        echo "$first $last $social $birth $salary">>$file
+    else
+        echo
+        echo "Data not inserted."
+    fi
+    echo
     echo '-------------------------------'
 }
 
@@ -114,24 +132,41 @@ function modify {
         echo '-------------------------------'
         return 0
     fi
-    social='xx-xxx-xxxx'
-    newLast='0'
-    newFirst='0'
-    newDate='0'
-    newSal='0'
+    local social=0
+    local newLast=0
+    local newFirst=0
+    local newDate=0
+    local newSal=-1
+    local search=0
     echo -n 'Please Enter the SSN of the employee to be modified: '
     read social;
-    while [ "$search" -ne 1 ] || [ "$search" -ne 2 ] || [ "$search" -ne 3 ] || [ "$search" -ne 4 ]; do
+    if grep -q $social $file;then
+       echo `grep $social $file`
+    else
+        echo "SSN not found!"
+        echo '-------------------------------'
+        return -1
+    fi
+    echo
+    while [ "$search" -ne 1 ] && [ "$search" -ne 2 ] && [ "$search" -ne 3 ] && [ "$search" -ne 4 ]; do
         echo '1. Last Name'
         echo '2. First Name'
         echo '3. DOB'
         echo '4. Salary'
-        echo -n 'Please sel\3[40;37mect a value: '
+        echo -n 'Please select a value: '
         read search
+        echo
         case $search in
             1)
-                echo -n 'Enter the new First Name: '
-                read newLast
+                len=11;
+                while [ "$len" -gt 10 ];do
+                    echo -n 'Enter Last Name: '
+                    read newLast
+                    len=`expr length $newLast`
+                    if [ $len -gt 10 ];then
+                        echo "Only <11 characters"
+                    fi
+                done
                 while [ "$conf" != 'y' ] && [ "$conf" != 'n' ]; do
                     echo -n "Are you sure you want to change the Last Name of $social to $newLast (y/n)? "
                     read conf
@@ -140,8 +175,15 @@ function modify {
                     fi
                 done;;
             2)
-                echo -n 'Enter the new Last Name: '
-                read newFirst
+                len=11;
+                while [ "$len" -gt 10 ];do
+                    echo -n 'Enter First Name: '
+                    read newFirst
+                    len=`expr length $newFirst`
+                    if [ $len -gt 10 ];then
+                        echo "Only <11 characters"
+                    fi
+                done
                 while [ "$conf" != 'y' ] && [ "$conf" != 'n' ]; do
                     echo -n "Are you sure you want to change the First Name of $social to $newFirst (y/n)? "
                     read conf
@@ -150,8 +192,19 @@ function modify {
                     fi
                 done;;
             3)
-                echo -n 'Enter the new DOB: '
-                read newDate
+                len=11;
+                while [ $len -ne 8 ];do
+                    echo -n 'Enter Birthday (MMDDYYYY): '
+                    read newDate
+                    len=`expr length $newDate`
+                    if [ $len -ne 8 ];then
+                        echo "8 digits are required!"
+                    fi
+                done
+                month=`expr substr $birth 1 2`
+                day=`expr substr $birth 3 2`
+                year=`expr substr $birth 5 4`
+                newDate="$month-$day-$year"
                 while [ "$conf" != 'y' ] && [ "$conf" != 'n' ]; do
                     echo -n "Are you sure you want to change the DOB of $social to $newDate (y/n)? "
                     read conf
@@ -160,8 +213,13 @@ function modify {
                     fi
                 done;;
             4)
-                echo -n 'Enter the new Salary: '
-                read newSal
+                while [ "$newSal" -lt 0 ];do
+                    echo -n 'Enter Salary: '
+                    read newSal 
+                    if [ "$newSal" -lt 0 ];then
+                        echo "Salary must be positive!"
+                    fi
+                done
                 while [ "$conf" != 'y' ] && [ "$conf" != 'n' ]; do
                     echo -n "Are you sure you want to change the salary of $social to $newSal (y/n)? "
                     read conf
@@ -173,6 +231,7 @@ function modify {
                 echo 'Invalid input';;
         esac
     done
+    echo
     echo '-------------------------------'
 }
 
@@ -244,4 +303,4 @@ do
             echo '-------------------------------';;
     esac
 done
-exit 0 
+exit 0
