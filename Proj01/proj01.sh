@@ -105,12 +105,13 @@ function delete {
     if [ -f $file ];then
         social='xx-xxx-xxxx'
         delete='m'
+        echo '------------------------------------------------------'
         echo -n 'Enter SSN of employee (include "-"): '
         read social
         local check=`grep $social $file`
         if [ -z "$check" ];then
             echo "SSN not found!"
-            echo '-------------------------------'
+            echo '------------------------------------------------------'
             return 0
         fi
         while [ "$delete" != 'n' ] && [ "$delete" != 'y' ]; do
@@ -120,10 +121,13 @@ function delete {
                 echo 'Invalid Input'
             fi
         done
+        if [ "$delete" == 'y' ];then
+            sed -i "/$social/d" $file
+        fi
     else
         echo "Add to the Database before deletion!"
     fi
-    echo '-------------------------------'
+    echo '------------------------------------------------------'
 }
 
 function modify {
@@ -137,7 +141,7 @@ function modify {
     local newFirst=0
     local newDate=0
     local newSal=-1
-    local search=0
+    search=0
     echo -n 'Please Enter the SSN of the employee to be modified: '
     read social;
     if grep -q $social $file;then
@@ -238,31 +242,55 @@ function modify {
 function retrieve {
     if [ ! -f $file ];then
         echo "Add to the Database before retrieving!"
-        echo '-------------------------------'
+        echo '---------------------------------------'
         return 0
     fi
     search=0
+    criteria=0
     while [ "$criteria" -ne 1 ] && [ "$criteria" -ne 2 ] && [ "$criteria" -ne 3 ] && [ "$criteria" -ne 4 ]; do
+        echo '----------------------------------------'
         echo '1. SSN'
         echo '2. Last Name'
         echo '3. First Name'
         echo '4. Salary'
         echo -n 'Choose from the following criteria: '
         read criteria
-        echo '-------------------------------'
+        echo '----------------------------------------'
+        local len=11
         case $criteria in
             1)
                 echo -n 'Enter SSN: '
-                read search;;
+                read search
+                if `grep -q $search $file`;then
+                    grep $search $file|sort -k 1
+                else
+                    echo 'No data exists!'
+                fi
+                ;;
             2)
                 echo -n 'Enter Last Name: '
-                read search;;
+                read search
+                if `grep -q $search $file`;then
+                    grep $search $file|sort -k 3
+                else
+                    echo 'No data exists!'
+                fi;;
             3)
                 echo -n 'Enter First Name: '
-                read search ;;
+                read search
+                if `grep -q $search $file`;then
+                    grep $search $file|sort -k 2
+                else
+                    echo 'No data exists!'
+                fi;;
             4)
                 echo -n 'Enter Salary: '
-                read search ;;
+                read search
+                if `grep -q $search $file`;then
+                    grep $search $file|sort -k 5
+                else
+                    echo 'No data exists!'
+                fi;;
             *)
                 echo 'Invalid Entry';;
         esac
@@ -272,33 +300,29 @@ function retrieve {
 
 function printDatabase {
     if [ ! -f $file ];then
+        echo '-------------------------------'
         echo "Nothing to Display!"
         echo '-------------------------------'
         return 0
     fi
+    echo '------------------------------------------------'
     cat $file
-    echo '-------------------------------'
+    echo '------------------------------------------------'
 }
 
 while [ "$option" != 'X' ] && [ "$option" != 'x' ]
 do 
     DisplayMenu
     read option
-    echo '-------------------------------'
     case $option in
-        a|A)
-            insert ;;
-        b|B)
-            modify ;;
-        c|C)
-            delete ;;
-        d|D)
-            retrieve ;;
-        e|E)
-            printDatabase ;;
-        x|X)
-            echo 'Exiting Program...';;
+        a | A) insert ;;
+        b | B) modify ;;
+        c | C) delete ;;
+        d | D) retrieve ;;
+        e | E) printDatabase ;;
+        x | X) echo 'Exiting Program...';;
         *)
+            echo '-------------------------------'
             echo 'Invalid Input'
             echo '-------------------------------';;
     esac
