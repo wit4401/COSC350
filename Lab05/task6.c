@@ -7,10 +7,11 @@ int main(){
     int fileOut=open("foorev2", O_CREAT | O_RDWR, 0660 );
     char buffer[1];
     int rbyte;
-    int i=1;
-    while((rbyte=pread(fileIn,buffer,rbyte,SEEK_END-i))>0){
+    off_t i=SEEK_END;
+
+    while(i>=0){
+        rbyte=pread(fileIn,buffer,rbyte,i--);
         write(fileOut,buffer,rbyte);
-        i++;
     }
     exit(0);
 }
