@@ -5,7 +5,7 @@
 int main(){
     int fileIn1=open("foo",O_RDONLY);
     int fileIn2=open("foo1",O_RDONLY);
-    int fileOut=open("foo12", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IWGRP);
+    int fileOut=open("foo12", O_CREAT | O_RDWR,0760);
     char buffer[1024];
     int rbyte;
 

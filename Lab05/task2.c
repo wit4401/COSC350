@@ -4,7 +4,7 @@
 
 int main(){
     int fileIn=open("foo",O_RDONLY);
-    int fileOut=open("clone1", O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+    int fileOut=open("clone1", O_CREAT | O_WRONLY,0666);
     char b[1];
     int rbyte;
     

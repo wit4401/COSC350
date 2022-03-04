@@ -4,7 +4,7 @@
 
 int main(){
     int fileIn=open("foo",O_RDONLY);
-    int fileOut=open("foorev", O_CREAT | O_RDWR, 0660 );
+    int fileOut=open("foorev", O_CREAT | O_RDWR, 0760 );
     char buffer[1];
     int rbyte;
     int offset=lseek(fileIn,-1,SEEK_END);
