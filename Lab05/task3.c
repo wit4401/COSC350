@@ -3,6 +3,7 @@
 #include<fcntl.h>
 
 int main(){
+    umask(000);
     int fileIn=open("foo",O_RDONLY);
     int fileOut=open("clone2", O_CREAT | O_WRONLY,0770);
     char buffer[32];

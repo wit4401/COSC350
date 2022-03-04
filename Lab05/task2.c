@@ -3,6 +3,7 @@
 #include<fcntl.h>
 
 int main(){
+    umask(000);
     int fileIn=open("foo",O_RDONLY);
     int fileOut=open("clone1", O_CREAT | O_WRONLY,0666);
     char b[1];

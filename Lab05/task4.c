@@ -3,6 +3,7 @@
 #include<fcntl.h>
 
 int main(){
+    umask(000);
     int fileIn1=open("foo",O_RDONLY);
     int fileIn2=open("foo1",O_RDONLY);
     int fileOut=open("foo12", O_CREAT | O_RDWR,0760);
