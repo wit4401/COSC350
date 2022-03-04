@@ -7,7 +7,7 @@ int main(){
     int fileOut=open("foorev2", O_CREAT | O_RDWR, 0760 );
     char buffer[1];
     int rbyte;
-    off_t i=SEEK_END;
+    off_t i=SEEK_END;   
 
     while(i>=0){
         rbyte=pread(fileIn,buffer,rbyte,i--);

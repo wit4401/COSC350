@@ -27,7 +27,7 @@ int main(int argc,char *argv[]){
     exit(0);
 }
 
-int ascii(char c){        
+int ascii(char c){  
     return c;
 }
 
