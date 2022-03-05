@@ -1,21 +1,33 @@
+/*
+* Lab 3 Task 5
+* COSC 350
+* Will Townsend
+*/
 #include<stdlib.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int main(){
-    umask(000);
-    int fileIn=open("foo",O_RDONLY);
-    int fileOut=open("foorev", O_CREAT | O_RDWR, 0760 );
-    char buffer[1];
-    int rbyte;
-    int offset=lseek(fileIn,0,SEEK_END)-1;
 
+    umask(000);//allows all permissions to be activated for usr, grp, or oth
+    int fileIn=open("foo",O_RDONLY);//opens a file called foo w/read only permission
+    int fileOut=open("foorev", O_CREAT | O_RDWR, 0760 );//creates a file foorev with rwxrw---- permissions
+    char buffer[1];//one byte buffer
+    int rbyte;//number of bytes read
+    int offset=lseek(fileIn,0,SEEK_END)-1;//initial offset (cursor set to the end of the file)
+    
+    //reads through foo backwards
     while(offset>=-1){
-        rbyte=read(fileIn,buffer,1);
-        write(fileOut,buffer,rbyte);
-        lseek(fileIn,offset--, SEEK_SET);
+        rbyte=read(fileIn,buffer,1);//read the current byte
+        write(fileOut,buffer,rbyte);//write the current byte
+        lseek(fileIn,offset--, SEEK_SET);//moves the cursor back a position
     }
-
+    
+    //closes files opened    
+    close(fileIn);
+    close(fileOut);
     exit(0);
 }
 
