@@ -37,7 +37,7 @@ int strToInt(char str[]){
 }
 
 int main(int argc,char *argv[]){
-    //error checks the parameters (makes sure there is at leat one integer
+    //error checks the parameters (makes sure there is at leat one integer)
     if(argc<2){
         printf("Please pass at least one arguement.\n");
         exit(1);
