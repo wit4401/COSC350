@@ -13,6 +13,6 @@
 # Task 7
 ### Write a C program that receive sequence of integers on the command line and prints their sum to the screen. Define your own function to convert string to integer instead of using atoi or any library functions. 
 ### Exit the program with an appropriate error message under the following error condition: 
-#### -There is not at least one integer on the command line. 
+#### -There is not at least one integer on the command line
 # Task 8
 ### Write C code which pass input (text file) and output file name as command line arguments. Open the input file as read only and open output file with mode rw-rw-rw. Your program encodes each character to ASCII code number and writes to output file. You need consider argument number error and open file error. You must not use any library function to convert a character to ASCII number.
