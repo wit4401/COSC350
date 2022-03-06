@@ -177,12 +177,12 @@ function delete {
         if [ "$delete" == 'y' ];then
             sed -i "/$social/d" $file
             echo "Employee Deleted"
-            echo '-------------------------------------------------------'
         else
             colorScheme Black_green
             echo "Employee Not Deleted!"
-            echo '-------------------------------------------------------'
         fi
+        colorScheme Black_green
+        echo '-------------------------------------------------------'
     else
         colorScheme Black_red
         echo "Add to the Database before deletion!"
