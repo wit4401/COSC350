@@ -9,5 +9,5 @@
 #### For RETRIEVE operation, the database should allow users to retrieve information by any one of the following criteria: 1) SSN 2) last name 3) first name 4) salary and display the information about the employees who meet the search criteria. The information displayed should look similar to below (nicely line-up and formatted) and sorted by the search criteria
 #### DisplayMenu function-> display a menu for users to make a selection of an operation.
 #### PrintDatabase->display data in proper format on screen
-#### Use of color in your console display to make it pleasant for users
+#### Use of color in the console display to make it pleasant for users
 ## Overall Performance
