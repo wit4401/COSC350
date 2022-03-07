@@ -27,7 +27,7 @@ function DisplayMenu {
     echo 'B. Modify'
     echo 'C. Delete'
     echo 'D. Retrieve'
-    echo 'E. Display'
+    echo 'E. Display Employees'
     echo 'F. Help'
     echo 'X. Exit Program'
     echo -n 'Please Select an Option: '
