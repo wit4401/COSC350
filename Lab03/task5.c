@@ -16,7 +16,7 @@ int main(){
     int fileOut=open("foorev", O_CREAT | O_RDWR, 0760 );//creates a file foorev with rwxrw---- permissions
     char buffer[1];//one byte buffer
     int rbyte;//number of bytes read
-    off_t offset=lseek(fileIn,0,SEEK_END)-1;//initial offset (cursor set to the end of the file)
+    off_t offset=lseek(fileIn,0,SEEK_END)-1;//initial offset (cursor set to the last character of the file)
     
     //reads through foo backwards
     while((rbyte=read(fileIn,buffer,1))>0){
