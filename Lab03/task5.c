@@ -19,8 +19,7 @@ int main(){
     off_t offset=lseek(fileIn,0,SEEK_END)-1;//initial offset (cursor set to the end of the file)
     
     //reads through foo backwards
-    while(offset>=-1){
-        rbyte=read(fileIn,buffer,1);//read the current byte
+    while((rbyte=read(fileIn,buffer,1))>0){
         write(fileOut,buffer,rbyte);//write the current byte
         lseek(fileIn,offset--, SEEK_SET);//moves the cursor back a position
     }
