@@ -21,7 +21,7 @@ function colorScheme {
 
 # Simple Function Displays the menu
 function DisplayMenu {
-    echo 'Employee Database Menu'
+    echo 'Employee Database Main Menu'
     echo '-------------------------------'
     echo 'A. Insert'
     echo 'B. Modify'
