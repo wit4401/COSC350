@@ -3,6 +3,7 @@ file=employee.db
 option='A'
 criteria=0
 
+# Function mad for easier color switching through the program
 function colorScheme {
     case $1 in
         Black_white)
@@ -18,19 +19,21 @@ function colorScheme {
     esac
 }
 
+# Simple Function Displays the menu
 function DisplayMenu {
-    echo 'Employee Database Menu'
+    echo 'Employee Database Main Menu'
     echo '-------------------------------'
     echo 'A. Insert'
     echo 'B. Modify'
     echo 'C. Delete'
     echo 'D. Retrieve'
-    echo 'E. Display'
+    echo 'E. Display Employees'
     echo 'F. Help'
     echo 'X. Exit Program'
     echo -n 'Please Select an Option: '
 }
 
+# Insert function: Allows user to input data into the file employee.db
 function insert {
     echo
     local len=11;
@@ -133,6 +136,7 @@ function insert {
         echo '-----------------------------------------------------'
 }
 
+# Function Delete: Allows the user to delete data via the SSN of the employee
 function delete {
     if [ -f $file ];then
         local social='xx-xxx-xxxx'
@@ -189,6 +193,7 @@ function delete {
     fi
 }
 
+# Function Modify: Allows the user to modify the data of a particular line of data
 function modify {
     if [ ! -f $file ];then
         colorScheme Black_red
@@ -311,6 +316,7 @@ function modify {
     fi
 }
 
+# Search Function: allows the user to grab certain employees based on SSN, Salary, or first or last name
 function retrieve {
     if [ ! -f $file ];then
         colorScheme Black_red
@@ -389,7 +395,7 @@ function retrieve {
                 printf "%-10s" Name Name
                 echo
                 echo '-------------------------------------------------------'
-                awk -vcol="5" -vsearch="$search" '$col ~ search' $file|sort -n -k5
+                awk -vcol="5" -vsearch="$search" '$col==search' $file|sort -n -k5
                 echo '-------------------------------------------------------';;
             *)
                 colorScheme Black_red
@@ -398,6 +404,7 @@ function retrieve {
     done
 }
 
+# Function printDatabase: allows the user to see all data points in employee.db
 function printDatabase {
     if [ ! -f $file ];then
         colorScheme Black_red
@@ -418,6 +425,7 @@ function printDatabase {
     echo '-------------------------------------------------------'
 }
 
+# Function helpInfo: displays a help window for the user which includes instructions on how to use the database.
 function helpInfo {
     colorScheme Black_purple
     echo '--------------------------------------------------------'
@@ -445,7 +453,8 @@ function helpInfo {
     echo 'via that criteria. Criteria includes SSN, first and'
     echo 'last name, and salary (Note: that the search is'
     echo 'case sensitive and displays anything with the string'
-    echo 'of characters entered (SSN is an exception)'
+    echo 'of characters entered (SSN and Salary are an'
+    echo 'exception and are specific)'
     echo
     echo 'Display: Simple function that displays all employees'
     echo 'in the Database from last modified/added to most'
