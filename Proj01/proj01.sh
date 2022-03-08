@@ -417,9 +417,6 @@ function printDatabase {
     echo '-------------------------------------------------------'
     printf '%-10s' First Last 
     printf '%-12s' SSN DOB Salary
-                colorScheme Black_red
-                echo 'Invalid Entry';;
-        esac
     echo
     printf "%-10s" Name Name
     echo
