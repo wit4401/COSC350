@@ -52,7 +52,8 @@ function insert {
         
         if `grep -q "$social" $file`;then
             colorScheme Black_red
-            echo "SSN Exists!"
+            echo "FATAL ERROR! SSN Exists!"
+            return -1;
         elif [ "$len" -ne 9 ];then
             colorScheme Black_red
             echo "Please Enter 9 digits."
@@ -234,7 +235,8 @@ function modify {
     else
         colorScheme Black_red
         echo "SSN not found!"
-        echo '-------------------------------'
+        colorScheme Black_green
+        echo '--------------------------------------------------------------------------------'
         return -1
     fi
     colorScheme Black_green
@@ -483,7 +485,8 @@ do
             colorScheme Black_red
             echo '-------------------------------'
             echo 'Invalid Input'
-            echo '-------------------------------';;
+            echo '-------------------------------'
+            ;;
     esac
 done
 colorScheme Black_white
