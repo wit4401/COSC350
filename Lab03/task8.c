@@ -36,15 +36,20 @@ int main(int argc,char *argv[]){
     //reading contents of the file
     while((rbyte=read(fileIn,&b,1)>0)){
         int num = (int) b;//conversion of char into an int (ascii form)       
-        int length;
-        length=len(num);
-        int newB;
-        for(int i=0;i<length;i++){            
-            newB=num%10;
-            num=num/10;
-            write(fileOut,&newB,length);
+        int length=len(num);//grabs the length of the number
+        int newB[length];//the buffer containing the digits
+        
+        //loops to put all the digits in the buffer
+        for(int i=length-1;i>=0;i--){           
+            newB[i]=num % 10 + '0';//makes it so they are characters
+            num=num/10;//moves the digit down by one
         }
-        write(fileOut," ",1);
+        //loops to put the ascii numbers into the file (for some reason I couldnt get it to work with the newB).
+        for(int i=0;i<length;i++){
+            char b=newB[i];//stores a byte into a smaller buffer
+            write(fileOut,&b,1);//writes the digits into the file
+        }
+        write(fileOut," ",1);//writes a space to seperate each ascii number in the file
     }
 
     //closes the open files
