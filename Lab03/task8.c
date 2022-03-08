@@ -5,6 +5,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+int len(int dig){
+    if(dig>=100)
+        return 3;
+    if(dig>=10)
+        return 2;
+    return 1;     
+}
+
 int main(int argc,char *argv[]){
     //error checks the arguements    
     if(argc!=3){
@@ -27,11 +35,17 @@ int main(int argc,char *argv[]){
 
     //reading contents of the file
     while((rbyte=read(fileIn,&b,1)>0)){
-        int num = (int) b;//conversion of char into an int (ascii form)
-        write(fileOut,&num,rbyte);//writes into the file the ascii equivalent (ERROR! does not give desired output)
-        printf("%d ",num);//tests the actual conversion
+        int num = (int) b;//conversion of char into an int (ascii form)       
+        int length;
+        length=len(num);
+        int newB;
+        for(int i=0;i<length;i++){            
+            newB=num%10;
+            num=num/10;
+            write(fileOut,&newB,length);
+        }
+        write(fileOut," ",1);
     }
-    puts("");
 
     //closes the open files
     close(fileIn);
