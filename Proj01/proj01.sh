@@ -36,30 +36,34 @@ function DisplayMenu {
 # Insert function: Allows user to input data into the file employee.db
 function insert {
     echo
-    local len=11;
+    local len=11; #initializes the length "checker" 
     local confir='m';
-    touch $file
+    touch $file #creates the file
+    #grabbing SSN input
     while [ "$len" -ne 9 ] || [ -z "$social" ] || grep -q "$social" $file;do
         colorScheme Black_green
         echo -n 'Enter SSN (Do not include "-"): '
         read social
         
+        #sets up the social in the correct format
         len=`expr length $social`
         three=`expr substr $social 1 3`
         two=`expr substr $social 4 2`
         four=`expr substr $social 6 4`
         social="$three-$two-$four"
         
+        #does the SSN already exist in the file
         if `grep -q "$social" $file`;then
             colorScheme Black_red
             echo "FATAL ERROR! SSN Exists!"
-            return -1;
+            return -1; #boots out of the function returning -1
         elif [ "$len" -ne 9 ];then
             colorScheme Black_red
             echo "Please Enter 9 digits."
         fi
     done
     
+    #grabbing first name input
     len=11;
     while [ -z $first ] || [ "$len" -gt 10 ];do
         colorScheme Black_green
@@ -72,6 +76,7 @@ function insert {
         fi
     done
     
+    #grabbing last name input
     len=11;
     while [ -z $last ] || [ "$len" -gt 10 ];do
         colorScheme Black_green
@@ -84,6 +89,7 @@ function insert {
         fi
     done
     
+    #grabbing the DOB input
     len=11;
     while [ -z $birth ] || [ "$len" -ne 8 ];do
         colorScheme Black_green
@@ -95,11 +101,13 @@ function insert {
             echo "8 digits are required!"
         fi
     done
+    #sets up the DOB in the right format
     local month=`expr substr $birth 1 2`
     local day=`expr substr $birth 3 2`
     local year=`expr substr $birth 5 4`
     local birth="$month-$day-$year"
     
+    #grabs the salary
     local salary=-1
     while [ "$salary" -lt 0 ];do
         colorScheme Black_green
@@ -110,6 +118,8 @@ function insert {
             echo "Salary must be positive!"
         fi
     done
+    
+    #validation loop
     while [ "$confir" != 'n' ] && [ "$confir" != 'y' ]; do
         colorScheme Black_green
         echo
@@ -124,6 +134,7 @@ function insert {
         fi
     done
     echo
+    #fufilling validation from the user whether y or n
     if [ "$confir" == y ];then
         printf "%-10s" $first $last>>$file 
         printf "%-12s" $social $birth $salary>>$file
@@ -180,7 +191,7 @@ function delete {
             fi
         done
         if [ "$delete" == 'y' ];then
-            sed -i "/$social/d" $file
+            sed -i "/$social/d" $file #sed enables us to remove a row in a file -i flag overwrites the file with everything except the deleted employee
             echo "Employee Deleted"
         else
             colorScheme Black_green
@@ -194,7 +205,7 @@ function delete {
     fi
 }
 
-# Function Modify: Allows the user to modify the data of a particular line of data
+# Function Modify: Allows the user to modify the data of a particular line of data (see comments of insert very similar idea just replacing information
 function modify {
     if [ ! -f $file ];then
         colorScheme Black_red
@@ -220,6 +231,7 @@ function modify {
             echo "Invalid Input"
         fi
     done
+    #displays the employee with the associated SSN if exists
     echo '--------------------------------------------------------------------------------'
     if grep -q $social $file;then
         colorScheme Black_cyan
@@ -371,7 +383,7 @@ function retrieve {
                 printf "%-10s" Name Name
                 echo
                 echo '-------------------------------------------------------'
-                awk -vcol="2" -vsearch="$search" '$col ~ search' $file|sort -n -k2
+                awk -vcol="2" -vsearch="$search" '$col ~ search' $file|sort -k2 #awk allows us to search a sigular column of a file and compare the elements (and then it sorts via the pipe and sort)
                 echo '-------------------------------------------------------';;
             3)
                 echo -n 'Enter First Name: '
@@ -384,7 +396,7 @@ function retrieve {
                 printf "%-10s" Name Name
                 echo
                 echo '-------------------------------------------------------'
-                awk -vcol="1" -vsearch="$search" '$col ~ search' $file|sort -n -k1
+                awk -vcol="1" -vsearch="$search" '$col ~ search' $file|sort -k1
                 echo '-------------------------------------------------------';;
             4)
                 echo -n 'Enter Salary: '
