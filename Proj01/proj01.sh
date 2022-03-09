@@ -328,7 +328,7 @@ function retrieve {
     fi
     local search=0
     local criteria=0
-    while [ "$criteria" -ne 1 ] && [ "$criteria" -ne 2 ] && [ "$criteria" -ne 3 ] && [ "$criteria" -ne 4 ]; do
+    while [ "$criteria" != '1' ] && [ "$criteria" != '2' ] && [ "$criteria" != '3' ] && [ "$criteria" != '4' ]; do
         echo
         echo '1. SSN'
         echo '2. Last Name'
@@ -401,7 +401,8 @@ function retrieve {
                 echo '-------------------------------------------------------';;
             *)
                 colorScheme Black_red
-                echo 'Invalid Entry';;
+                echo 'Invalid Entry'
+                colorScheme Black_green;;
         esac
     done
 }
