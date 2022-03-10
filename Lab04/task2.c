@@ -21,22 +21,22 @@ int main(int argc,char *argv[]){
         puts("Must pass ONE arguement!");
         exit(1);
     }
-    int file;
-    if (file=open(argv[1],O_RDONLY)==-1){
+    int file=open(argv[1],O_RDONLY);
+    if (file==-1){
         puts("Error could not open file!");
         exit(2);
     }
-    char *b;
-    char readByte;
     int rbyte;
-    int index=0;
+    char b;
+    char *newBuff;
+    int sum=0;
     
-    while((rbyte=read(file,&readByte,1))>0)
-        b[index++]=readByte;
-    
-    int num=0;
-    for(int i=0;i<index;i++)
-        num = num * 10 + b[i] - '0';
-    printf("%d",num);
+    while((rbyte=read(file,&b,1))>0)
+        if (isdigit((int) b)!=0)
+            sum = sum * 10 + b -'0';
+    sum+=10;
+    convIntToStr(newBuff,sum);
+    write(1,newBuff,sizeof(newBuff));
+    puts("");
     exit(0);
 }
