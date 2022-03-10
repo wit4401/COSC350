@@ -1,6 +1,6 @@
 # Project 1: Employee Database
 ## Objective
-### Using Bash, develop a mini-database system to manage employee information. Your database should allow users to insert, delete, modify and retrieve employee records. All the data in the database is stored in an external file called “employee.db”.
+### Using Bash, develop a mini-database system to manage employee information. Your database should allow users to insert, delete, modify and retrieve employee records. All the data in the database is stored in an external file called “employee.db”
 ## Requirements
 ### The program supports the following operations:
 #### For INSERT operation, users need to provide all the information for an employee. Some information should be validated before they are entered into database. SSN should be exactly nine digits with “-“ in between. First name and last name should contain less than 10 characters each. Birthday must be in the format of MM-DD-YYYY. Salary must be positive. Please note that every employee should have their unique SSN. If a new employee to be added to the database has the same SSN as an existing one, the new employee information will not be entered into the database and a warning message should be given.
