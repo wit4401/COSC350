@@ -1,4 +1,4 @@
-# COSC350
+# COSC 350
 This repository contains the labs done in my Systems Software class. Taken during Spring 2022 and taught by Dr. Xiaohong Sophie Wang
 
 Course Description:
