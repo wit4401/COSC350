@@ -31,12 +31,13 @@ int main(int argc,char *argv[]){
     char *newBuff;
     int sum=0;
     
+    //reads each character in the file to check if they are digits if so convert and utilize in the variable 'sum'
     while((rbyte=read(file,&b,1))>0)
         if (isdigit((int) b)!=0)
             sum = sum * 10 + b -'0';
-    sum+=10;
-    convIntToStr(newBuff,sum);
-    write(1,newBuff,sizeof(newBuff));
+    sum+=10;//adds ten to sum
+    convIntToStr(newBuff,sum);//calls the function to convert the integer into a string
+    write(1,newBuff,sizeof(newBuff));//writes the embedded integer onto the standard output
     puts("");
     exit(0);
 }

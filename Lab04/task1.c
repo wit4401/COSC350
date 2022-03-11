@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+//function converts the arr of digits into a singular int
 int intArrToInt(int digits[], int length){
     int finalNum=0;
     for(int i=0;i<length;i++){
@@ -30,20 +31,21 @@ int main(int argc, char *argv[]){
         exit(1);  
     }
     
-    char b;
-    int rbyte;
-    int *num;
-    int index=0;
+    char b;//singular byte buffer
+    int rbyte;//read bytes
+    int *num;//int array containing the digits
+    int index=0;//an index for the num array
     while((rbyte=read(fileIn,&b,1))>0){
-        if(b != ' ')
-            num[index++]= b - '0';
+        if(b != ' ')//if b is a number
+            num[index++]= b - '0';//inserts into the array
         else{
-           //printf("%d ",intArrToInt(num,index+1));
-            char newB = (char) intArrToInt(num,index);
-            write(fileOut,&newB,1);
-            index=0;
+            //this means
+            char newB = (char) intArrToInt(num,index);//casts the integer as a character
+            write(fileOut,&newB,1);//writes the character into the file
+            index=0;//resets the index for the next set of digits
         }
     }
+    //close both of the files that were opened
     close(fileIn);
     close(fileOut);
     exit(0);

@@ -6,42 +6,28 @@
 #include<sys/types.h>
 
 int palind(int fd1, int fd2){
-    off_t offset=lseek(fd1,0,SEEK_END);
-    if((offset%2)==1)
-        return 0;
-    off_t mid=lseek(fd2,offset,SEEK_SET)/2;
-    offset=lseek(fd1,0,SEEK_SET);
-    
-    char b;
-    int index=0;
-    char half1[mid];
-    char half2[mid];
-    
-    while(offset<=mid){
-        read(fd1,&b,1);
-        half1[index++]=b;
-        offset++;
-    }
-    
-    index=0;
-    offset=lseek(fd1,0,SEEK_END)-1;
-    while(offset>=mid){
-        read(fd1,&b,1);
-        half2[index++]=b;
-        lseek(fd1,offset--,SEEK_SET);
-    }
-    
-    for(int i=0;i<index*2;i++){
-        if(half1[i]!=half2[i])
+    char b1;//single byte buffer
+    char b2;//another single byte buffer
+    off_t offsetFD2=lseek(fd2,0,SEEK_END)-1;//sets the cursor of the file to the last character
+    off_t offsetFD1=0;
+    while(offsetFD1!=offsetFD2-1){
+        lseek(fd1,offsetFD1++,SEEK_SET);
+        read(fd1,&b1,1);
+        lseek(fd2,--offsetFD2,SEEK_SET);
+        read(fd2,&b2,1);
+        if(b1!=b2)
             return 0;
     }
-    return 1;
+    
+    return 1;//it has looped through successfully and is indeed a palindrome
 }   
 
 int main(){
-    int file=open("task3.txt",O_RDONLY);
+    int file=open("task3.txt",O_RDONLY);//opens a test file called task3.txt
+    int sameFile=dup(file);//another file descriptor for our opened file
+    int res=palind(file,sameFile);//initialized and grabs the result of palind()
     
-    int res=palind(file,dup(file));
+    //displays whether the content is a palindrome or not
     if(res==0)
         puts("The file content is not a palindrome!");
     else
