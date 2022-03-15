@@ -18,37 +18,58 @@ int main(int argc,char *argv[]){
     }
     
     struct stat fileType;
-    char *pwd="/mnt/linuxlab/home";
-    char *pathTo=argv[2];
-    char oldPath=argv[1];
-    if (pathTo[0]=='~'){
-        for(int i=0;i<strlen(pathTo)-1;i++)
-            pathTo[i]=pathTo[i+1];
-        strcat(pwd,pathTo);
-    }
-    strcat("/COSC350/",oldPath);
-    strcat(pwd,oldPath);
-    printf("Old Path: %s\n",oldPath);
-    printf("New Path: %s\n",pathTo)
-    if (stat(pathTo,&fileType)==-1){
-        puts("lstat Error");
-        exit(2);
-    }
-    if(S_ISDIR(fileType.st_mode)){
-        char *newPath;
-        strcpy(argv[1],newPath);
-        strcat('/',newPath);
-        srtcat(path,newPath);
-        link(newPath,oldPath);
-        unlink(oldPath);
-    }
-    else if(S_ISREG(fileType.st_mode)){
+    char oldPath[1024];
+    char newPath[1024];
+    char *pwd="/home/wit4401/Desktop/COSC350/Lab04/";
+    
+    strcat(oldPath,pwd);
+    strcpy(newPath,argv[2]);
+
+    if (stat(newPath,&fileType)==-1){
+        int len=strlen(newPath)-1;
+        int newNameLen;
+        char newOld[1024];
+        
+        while(newPath[len--]!='/')
+            newNameLen++;
+        
+        char rev[newNameLen];
+        char newName[newNameLen];
+        int index=newNameLen;
+        len=strlen(newPath);
+        int lenI=len-1;
+        
+        for(int i=0;i<len;i++)
+            rev[i]=newPath[lenI--];
+        
+        len=index;
+        for(int i=0;i<len;i++)
+            newName[i]=rev[--index];
+        
+        strcat(newOld,oldPath);
+        strcat(oldPath,argv[1]);
+        strcat(newOld,newName);
+        
+        rename(oldPath,newOld);
         link(oldPath,newPath);
         unlink(oldPath);
     }
     else{
-        puts("Unknown Error");
-        exit(2);
+        if(S_ISDIR(fileType.st_mode)){
+            strcat(oldPath,argv[1]);
+            strcat(newPath,"/");
+            strcat(newPath,argv[1]);
+            if (link(oldPath,newPath)==-1){printf("Error\n");}
+            if (unlink(oldPath)==-1){printf("Error\n");}
+        }
+        else if(S_ISREG(fileType.st_mode)){
+            puts("File name exists!");
+            exit(1);
+        }
+        else{
+            puts("Unknown Error");
+            exit(2);
+        }
     }
     exit(0);
 }
