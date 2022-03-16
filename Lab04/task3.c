@@ -15,15 +15,26 @@ int palind(int fd1, int fd2){
     char b2;//another single byte buffer
     off_t offsetFD2=lseek(fd2,0,SEEK_END)-1;//sets the cursor of the file to the last character
     off_t offsetFD1=0;
-    while(offsetFD1!=offsetFD2-1){
-        lseek(fd1,offsetFD1++,SEEK_SET);
-        read(fd1,&b1,1);
-        lseek(fd2,--offsetFD2,SEEK_SET);
-        read(fd2,&b2,1);
-        if(b1!=b2)
-            return 0;
+    if((offsetFD2+1)%2==1){
+        while(offsetFD1!=offsetFD2){
+            lseek(fd1,offsetFD1++,SEEK_SET);
+            read(fd1,&b1,1);
+            lseek(fd2,--offsetFD2,SEEK_SET);
+            read(fd2,&b2,1);
+            if(b1!=b2)
+                return 0;
+        }
     }
-    
+    else{
+        while(offsetFD1!=offsetFD2-1){
+            lseek(fd1,offsetFD1++,SEEK_SET);
+            read(fd1,&b1,1);
+            lseek(fd2,--offsetFD2,SEEK_SET);
+            read(fd2,&b2,1);
+            if(b1!=b2)
+                return 0;
+        }
+    }
     return 1;//it has looped through successfully and is indeed a palindrome
 }   
 

@@ -5,11 +5,18 @@ cfiles=`ls -l *.c | wc -l`
 cppfiles=`ls -l *.cpp | wc -l`
 hfiles=`ls  -l *.h | wc -l`
 
-echo "There are $shfiles .sh files"
+if [ $shfiles -ne 0 ];then
+    echo "There are $shfiles .sh files"
+fi
 
-echo "There are $cfiles .c files"
+if [ $cfiles -ne 0 ];then
+    echo "There are $cfiles .c files"
+fi
 
-echo "There are $cppfiles .cpp files"
+if [ $cppfiles -ne 0 ];then
+    echo "There are $cppfiles .cpp files"
+fi
 
-echo "There are $hfiles .h files"
-
+if [ $hfiles -ne 0 ];then
+    echo "There are $hfiles .h files"
+fi
