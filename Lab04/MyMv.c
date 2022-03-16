@@ -16,21 +16,20 @@ int main(int argc,char *argv[]){
         puts("Must pass two arguements!");
         exit(1);
     }
-    
     struct stat fileType;
     char oldPath[1024];
     char newPath[1024];
-    char *pwd="/home/wit4401/Desktop/COSC350/Lab04/";
-    
-    strcat(oldPath,pwd);
+    char *pwd="/mnt/linuxlab/home/wtownsend2/COSC350/Lab04/";
+    strcpy(oldPath,pwd);
     strcpy(newPath,argv[2]);
+
     if(open(argv[1],O_RDONLY)==-1){
-        puts("File doesn't exist.");        
+        puts("File doesn't exist.");
         exit(2);
     }
     if (stat(newPath,&fileType)==-1){
         int len=strlen(newPath)-1;
-        int newNameLen;
+        int newNameLen=0;
         char newOld[1024];
         
         while(newPath[len--]!='/')
@@ -48,12 +47,9 @@ int main(int argc,char *argv[]){
         len=index;
         for(int i=0;i<len;i++)
             newName[i]=rev[--index];
-        
-        strcat(newOld,oldPath);
         strcat(oldPath,argv[1]);
-        strcat(newOld,newName);
         
-        rename(oldPath,newOld);
+        rename(oldPath,newPath);
         link(oldPath,newPath);
         unlink(oldPath);
     }
@@ -79,7 +75,7 @@ int main(int argc,char *argv[]){
             puts("");            
             unlink(newPath);
             int len=strlen(newPath)-1;
-            int newNameLen;
+            int newNameLen=0;
             char newOld[1024];
         
             while(newPath[len--]!='/')
