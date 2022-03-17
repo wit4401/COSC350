@@ -16,29 +16,36 @@ int main(int argc,char *argv[]){
         puts("Must pass two arguements!"); 
         exit(1); 
     } 
-    struct stat fileType; 
-    char oldPath[1024]; 
-    char newPath[1024]; 
-    char *pwd="/mnt/linuxlab/home/wtownsend2/COSC350/Lab04/"; 
-    strcpy(oldPath,pwd); 
-    strcpy(newPath,argv[2]); 
+    struct stat fileType;//stores file data
+    char oldPath[1024]; //character array for the path of selected file
+    char newPath[1024]; //character array for the newPath of the selected file
+    char *pwd="/mnt/linuxlab/home/wtownsend2/COSC350/Lab04/"; //the pwd of the file
+    strcpy(oldPath,pwd); //
+    strcpy(newPath,argv[2]);//copies the newPath to the
  
+    //check to see if the file exists
     if(open(argv[1],O_RDONLY)==-1){ 
         puts("File doesn't exist."); 
         exit(2); 
-    } 
+    }
+    //all these statements check the newPath to see if it is a directory, a nonexistent file, or an existing file and executes
+    //proceedors accordingly
     if (stat(newPath,&fileType)==-1){ 
+        //if the file doesnt exist it simply renames the file and moves it to the correct location
         strcat(oldPath,argv[1]);
         rename(oldPath,newPath); 
     } 
-    else{ 
+    else{
+        //if it is a directory it moves the file into the selected directory
         if(S_ISDIR(fileType.st_mode)){ 
             strcat(oldPath,argv[1]); 
             strcat(newPath,"/"); 
-            strcat(newPath,argv[1]); 
+            strcat(newPath,argv[1]);
             if (link(oldPath,newPath)==-1){printf("Error\n");} 
             if (unlink(oldPath)==-1){printf("Error\n");} 
         } 
+        //if the file exists it asks the user if they want to overwrite and does the same as if the file didn't exist
+        //rename and moves.
         else if(S_ISREG(fileType.st_mode)){ 
             char confir='m'; 
             while(confir!='n' && confir!='y'){          
