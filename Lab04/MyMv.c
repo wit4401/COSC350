@@ -55,11 +55,11 @@ int main(int argc,char *argv[]){
         len=strlen(newPath);
         int lenI=len-1;
         
-        for(int i=0;i<len;i++)
+        //this copies the contents of last elements newPath (i.e. the new name of the file)
+        for(int i=0;i<newNameLen;i++)
             rev[i]=newPath[lenI--];
         
-        len=index;
-        for(int i=0;i<len;i++)
+        for(int i=0;i<newNameLen;i++)
             newName[i]=rev[--index];
         strcat(oldPath,argv[1]);
         
@@ -70,12 +70,15 @@ int main(int argc,char *argv[]){
     }
     else{
         if(S_ISDIR(fileType.st_mode)){
+            //finalizes the paths
             strcat(oldPath,argv[1]);
             strcat(newPath,"/");
             strcat(newPath,argv[1]);
+            //links the new path and unliks the old one
             if (link(oldPath,newPath)==-1){printf("Error\n");}
             if (unlink(oldPath)==-1){printf("Error\n");}
         }
+        //this does the same as above (as if no file existed) but confirms if the file is to be overwritten or not
         else if(S_ISREG(fileType.st_mode)){
             char confir='m';
             while(confir!='n' && confir!='y'){         
