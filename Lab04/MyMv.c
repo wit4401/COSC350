@@ -12,26 +12,40 @@
 #include <sys/stat.h>
 
 int main(int argc,char *argv[]){
+    //error checks arguement values.
     if(argc!=3){
         puts("Must pass two arguements!");
         exit(1);
     }
-    struct stat fileType;
-    char oldPath[1024];
-    char newPath[1024];
-    char *pwd="/mnt/linuxlab/home/wtownsend2/COSC350/Lab04/";
+    struct stat fileType;//makes the stat struct to get file info
+    char oldPath[1024];//contains the oldPath of the file
+    char newPath[1024];//contians the newPath for the file
+    char *pwd="/mnt/linuxlab/home/wtownsend2/COSC350/Lab04/";//character pointer holds the pwd
+    
+    //attaches the argv[2] to the newPath and pwd to oldPath
     strcpy(oldPath,pwd);
     strcpy(newPath,argv[2]);
-
-    if(open(argv[1],O_RDONLY)==-1){
+    
+    //checks for the file
+    int fd;
+    if((fd=open(argv[1],O_RDONLY))==-1){
         puts("File doesn't exist.");
         exit(2);
     }
+    close(fd);
+    
+    /*
+    * Checks if the file exists/is a directory, if it is then it will link the file to its new destination 
+    * and unlink the old destination. If no file exists it needs to rename the file to the appropriate
+    * name indicated. If a file exists it asks the user if they want to overwrite the file and does so
+    * accordingly.
+    */
     if (stat(newPath,&fileType)==-1){
         int len=strlen(newPath)-1;
         int newNameLen=0;
         char newOld[1024];
         
+        //finds the length of the new name
         while(newPath[len--]!='/')
             newNameLen++;
         
@@ -49,6 +63,7 @@ int main(int argc,char *argv[]){
             newName[i]=rev[--index];
         strcat(oldPath,argv[1]);
         
+        //renames the file and links 
         rename(oldPath,newPath);
         link(oldPath,newPath);
         unlink(oldPath);
