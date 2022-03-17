@@ -5,6 +5,8 @@
 ### Open the utmp file
 #### a. Write a function named openUtmpFile that opens the utmp file and returns its file descriptor. If the file can't be opened, the function writes an error message and exits (thereby terminating the program). 
 #### b. Call openUtmpFile in the main function. Compile your program to check for errors.
+#### c. Add code in your main function to loop through the utmp file, reading each record. For each record, just print the user name. 
+#### d. Add code in the loop to count the number of records that are USER_PROCESS records (logged-in users). When the loop is done, print the number of logged-in users found. Check your results for correctness
 # Task 3
 ### Write your own asctime which returns string
 #### a. Write your own function myasctime which operates exactly same as char *asctime(const struct tm *timeptr).
