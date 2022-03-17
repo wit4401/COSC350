@@ -61,12 +61,15 @@ int main(int argc,char *argv[]){
         
         for(int i=0;i<newNameLen;i++)
             newName[i]=rev[--index];
+         
+        strcat(newOld,oldPath);
         strcat(oldPath,argv[1]);
+        strcat(newOld,newName);
         
         //renames the file and links 
-        rename(oldPath,newPath);
-        link(oldPath,newPath);
-        unlink(oldPath);
+        rename(oldPath,newOld);
+        link(newOld,newPath);
+        unlink(newOld);
     }
     else{
         if(S_ISDIR(fileType.st_mode)){
@@ -105,20 +108,20 @@ int main(int argc,char *argv[]){
             len=strlen(newPath);
             int lenI=len-1;
         
-            for(int i=0;i<len;i++)
+            for(int i=0;i<newNameLen;i++)
                 rev[i]=newPath[lenI--];
         
-            len=index;
-            for(int i=0;i<len;i++)
+            for(int i=0;i<newNameLen;i++)
                 newName[i]=rev[--index];
         
             strcat(newOld,oldPath);
             strcat(oldPath,argv[1]);
             strcat(newOld,newName);
         
+            //renames the file and links 
             rename(oldPath,newOld);
-            link(oldPath,newPath);
-            unlink(oldPath);
+            link(newOld,newPath);
+            unlink(newOld);
         }
         else{
             puts("Unknown Error");
