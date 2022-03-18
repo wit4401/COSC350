@@ -71,7 +71,8 @@ char *myasctime(const struct tm *t){
 	for(year;year!=0;year/10)
 	strcat(ptrYear,(char)year + '0');
 	strcat(date,ptrYear);
-
+	
+	return date;
 }
 
 int main(){
