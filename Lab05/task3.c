@@ -5,6 +5,7 @@
 *********************/
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 char *myasctime(const struct tm *t){
 	char date[24];
