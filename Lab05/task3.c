@@ -8,8 +8,9 @@
 #include<time.h>
 
 char *myasctime(const struct tm *t){
-	char date[24];
+	char date[24]; //date will contian the result to be returned
 	
+	//sets up the day of the week and stores it in date
 	char dayW[3];
 	if(t.tm_wday==0){dayW="Sun";}
 	if(t.tm_wday==1){dayW="Mon";}
@@ -21,6 +22,7 @@ char *myasctime(const struct tm *t){
 	strcpy(date,dayW);
 	strcat(date," ");
 	
+	//sets up the current month and stores it in date
 	char month[3];
 	if(t.tm_mon==0){month="Jan";}
 	if(t.tm_mon==1){month="Feb";}
@@ -37,6 +39,7 @@ char *myasctime(const struct tm *t){
 	strcat(date,month);
 	strcat(date," ");
 	
+	//sets up the day of the month and stores it in date
 	int dayM=t.tm_mday;
 	char ptrDay[2];
 	if(dayM<10){
@@ -52,25 +55,29 @@ char *myasctime(const struct tm *t){
 	strcat(date,dayM);
 	strcat(date," ");
 	
+	//sets up the hour of the day and stores it in date
 	char ptrHr[2];
 	int hr=t.tm_hour;
 	strcat(date,ptrHr);
 	strcat(date,":");
 	
+	//sets up the min of the hour and stores it in date
 	char ptrMin[2];
 	int min=t.tm_min;
 	strcat(date,ptrMin);
 	strcat(date,":");
 	
+	//sets up the second of the min and stores it in date
 	char ptrSec[2];
 	int sec=t.tm_sec;
 	strcat(date,ptrSec);
 	strcat(date," ");
 	
+	//sets up the year and stores it in date
 	int year=t.tm_year + 1900;
 	char ptrYear[4];
 	for(year;year!=0;year/10)
-	strcat(ptrYear,(char)year + '0');
+		strcat(ptrYear,(char)year + '0');
 	strcat(date,ptrYear);
 	
 	return date;
