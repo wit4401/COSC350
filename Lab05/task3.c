@@ -76,6 +76,7 @@ char *myasctime(const struct tm *t){
 }
 
 int main(){
-	
+	struct tm time;
+	puts(myasctime(time));
 	return(0);
 }
