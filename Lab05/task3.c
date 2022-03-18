@@ -69,7 +69,7 @@ char *myasctime(const struct tm *t){
 	int year=t.tm_year + 1900;
 	char ptrYear[4];
 	for(year;year!=0;year/10)
-		strcat(ptrYear,(char)year + '0');
+	strcat(ptrYear,(char)year + '0');
 	strcat(date,ptrYear);
 
 }
