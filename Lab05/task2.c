@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <utmp.h>
 
+//task 2.1
 int openUtmpFile(){
     int fd;
     if((fd=open("/var/run/utmp",O_RDONLY))==-1){
@@ -21,12 +22,26 @@ int openUtmpFile(){
 }
 
 int main(){
+    setutent();
 	int fd=openUtmpFile();
-	int rbyte;
-	char buff[1028];
     printf("File descriptor for umpt.h: %d\n",fd);
-    while((rbyte=read(fd,buff,sizeof(buff)))>0)
-    	write(1,buff,rbyte);
-    //printf("Number of users: %d\n",userCount);
+    
+    //task 2.2
+    struct utmp *buf;
+    int count=0;
+    int i=0;
+    buf=getutent();
+    printf("Users: ");
+    while(buf!=NULL){
+        printf("%s ",buf->ut_user);
+        if(buf->ut_type==USER_PROCESS)
+            count++;
+        buf=getutent();
+    }
+    puts("");
+    printf("There are %d users logged in.\n",count);
+    //closes the file and ends the 
+    endutent();
+    close(fd);
     exit(0);
 }
