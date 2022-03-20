@@ -21,13 +21,12 @@ int openUtmpFile(){
 }
 
 int main(){
-    printf("File descriptor for umpt.h: %d\n",openUtmpFile());
-    struct utmp users;
-    int userCount=0;
-    for(int i=0;users.ut_user[i]!='\0';i++){
-        printf("%s",users.ut_user[i]);
-        userCount++;
-    }
-    printf("Number of users: %d\n",userCount);
+	int fd=openUtmpFile();
+	int rbyte;
+	char buff[1028];
+    printf("File descriptor for umpt.h: %d\n",fd);
+    while((rbyte=read(fd,buff,sizeof(buff)))>0)
+    	write(1,buff,rbyte);
+    //printf("Number of users: %d\n",userCount);
     exit(0);
 }
