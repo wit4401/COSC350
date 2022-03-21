@@ -13,84 +13,102 @@ char *myasctime(const struct tm *t){
 	
 	//sets up the day of the week and stores it in date
 	char *dayW;
-	if(t->tm_wday==0){dayW="Sun";}
-	if(t->tm_wday==1){dayW="Mon";}
-	if(t->tm_wday==2){dayW="Tue";}
-	if(t->tm_wday==3){dayW="Wed";}
-	if(t->tm_wday==4){dayW="Thu";}
-	if(t->tm_wday==5){dayW="Fri";}
-	if(t->tm_wday==6){dayW="Sat";}
+	int check=t->tm_wday;
+	if(check==0){dayW="Sun";}
+	if(check==1){dayW="Mon";}
+	if(check==2){dayW="Tue";}
+	if(check==3){dayW="Wed";}
+	if(check==4){dayW="Thu";}
+	if(check==5){dayW="Fri";}
+	if(check==6){dayW="Sat";}
 	strcpy(date,dayW);
 	strcat(date," ");
 	
 	//sets up the current month and stores it in date
 	char *month;
-	if(t->tm_mon==0){month="Jan";}
-	if(t->tm_mon==1){month="Feb";}
-	if(t->tm_mon==2){month="Mar";}
-	if(t->tm_mon==3){month="Apr";}
-	if(t->tm_mon==4){month="May";}
-	if(t->tm_mon==5){month="Jun";}
-	if(t->tm_mon==6){month="Jul";}
-	if(t->tm_mon==7){month="Aug";}
-	if(t->tm_mon==8){month="Sep";}
-	if(t->tm_mon==9){month="Oct";}
-	if(t->tm_mon==10){month="Nov";}
-	if(t->tm_mon==11){month="Dec";}
+	check=t->tm_mon;
+	if(check==0){month="Jan";}
+	if(check==1){month="Feb";}
+	if(check==2){month="Mar";}
+	if(check==3){month="Apr";}
+	if(check==4){month="May";}
+	if(check==5){month="Jun";}
+	if(check==6){month="Jul";}
+	if(check==7){month="Aug";}
+	if(check==8){month="Sep";}
+	if(check==9){month="Oct";}
+	if(check==10){month="Nov";}
+	if(check==11){month="Dec";}
 	strcat(date,month);
 	strcat(date," ");
 	
 	//sets up the day of the month and stores it in date
 	int dayM=t->tm_mday;
-	char ptrDay[2];
-	/*
-     * To be added
-     */
-	strcat(date,ptrDay);
+	int dig;
+	char insert;
+	for(int i=0;i<2;i++){
+	    dig=dayM%10;
+	    dig=dig+'0';
+	    insert=(char)dig;
+	    strcat(date,&insert);
+	    dayM=dayM/10; 
+	}
 	strcat(date," ");
 	
 	//sets up the hour of the day and stores it in date
-	char ptrHr[2];
 	int hr=t->tm_hour;
-    /*
-     * To be added
-     */
-	strcat(date,ptrHr);
+	for(int i=0;i<2;i++){
+            dig=hr%10;
+	    dig=dig+'0';
+            insert=(char)dig;
+            strcat(date,&insert);
+	    hr=hr/10;
+        }
 	strcat(date,":");
 	
 	//sets up the min of the hour and stores it in date
-	char ptrMin[2];
 	int min=t->tm_min;
-	/*
-     * To be added
-     */
-	strcat(date,ptrMin);
+	for(int i=0;i<2;i++){
+            dig=min%10;
+	    dig=dig+'0';
+            insert=(char)dig;
+            strcat(date,&insert);
+	    min=min/10;
+        }
 	strcat(date,":");
 	
 	//sets up the second of the min and stores it in date
-	char ptrSec[2];
 	int sec=t->tm_sec;
-    /*
-     * To be added
-     */
-	strcat(date,ptrSec);
-	strcat(date," ");
+	for(int i=0;i<2;i++){
+            dig=sec%10;
+	    dig=dig+'0';
+            insert=(char)dig;
+            strcat(date,&insert);
+	    sec=sec/10;
+        }
+	strcat(date,":");
 	
 	//sets up the year and stores it in date
 	int year=t->tm_year + 1900;
-    /*
-     * To be added
-     */
-	strcat(date,ptrYear);
-	
+	for(int i=0;i<4;i++){
+            dig=year%10;
+	    dig=dig+'0';
+            insert=(char)dig;
+            strcat(date,&insert);
+	    year=year/10;
+        }
 	return date;
 }
 
 int main(){
 	const struct tm *currTime;
-    time_t t;
-    time(&t);
-    currTime=localtime(&t);
-	puts(myasctime(currTime));
+	time_t t;
+	char *res;
+
+	time(&t);
+	currTime=localtime(&t);
+	res=myasctime(currTime);
+	printf("%s",res);
+	puts("");
 	return(0);
 }
