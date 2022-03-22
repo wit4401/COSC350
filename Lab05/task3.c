@@ -9,11 +9,11 @@
 #include<time.h>
 
 char *myasctime(const struct tm *t){
-	char date[24]; //date will contian the result to be returned
+	char *date; //date will contian the result to be returned
 	
 	//sets up the day of the week and stores it in date
 	char *dayW;
-	int check=t->tm_wday;
+	int check=t->tm_wday;//defines check with the day of the week 0-6 (Sun-Sat)
 	if(check==0){dayW="Sun";}
 	if(check==1){dayW="Mon";}
 	if(check==2){dayW="Tue";}
@@ -26,7 +26,7 @@ char *myasctime(const struct tm *t){
 	
 	//sets up the current month and stores it in date
 	char *month;
-	check=t->tm_mon;
+	check=t->tm_mon;//redefines check with the month of the year 0-11 (Jan-Dec)
 	if(check==0){month="Jan";}
 	if(check==1){month="Feb";}
 	if(check==2){month="Mar";}
@@ -45,58 +45,59 @@ char *myasctime(const struct tm *t){
 	//sets up the day of the month and stores it in date
 	int dayM=t->tm_mday;
 	int dig;
-	char insert;
+    char arrInt[]="00";
 	for(int i=0;i<2;i++){
 	    dig=dayM%10;
 	    dig=dig+'0';
-	    insert=(char)dig;
-	    strcat(date,&insert);
+	    arrInt[1-i]=(char)dig;
 	    dayM=dayM/10; 
 	}
+	strcat(date,arrInt);
 	strcat(date," ");
 	
 	//sets up the hour of the day and stores it in date
 	int hr=t->tm_hour;
 	for(int i=0;i<2;i++){
-            dig=hr%10;
+        dig=hr%10;
 	    dig=dig+'0';
-            insert=(char)dig;
-            strcat(date,&insert);
+        arrInt[1-i]=(char)dig;
 	    hr=hr/10;
-        }
+    }
+    strcat(date,arrInt);
 	strcat(date,":");
 	
 	//sets up the min of the hour and stores it in date
 	int min=t->tm_min;
 	for(int i=0;i<2;i++){
-            dig=min%10;
-	    dig=dig+'0';
-            insert=(char)dig;
-            strcat(date,&insert);
+        dig=min%10;
+        dig=dig+'0';
+        arrInt[1-i]=(char)dig;
 	    min=min/10;
-        }
-	strcat(date,":");
+    }
+    strcat(date,arrInt);
+    strcat(date,":");
 	
 	//sets up the second of the min and stores it in date
 	int sec=t->tm_sec;
 	for(int i=0;i<2;i++){
-            dig=sec%10;
+        dig=sec%10;
 	    dig=dig+'0';
-            insert=(char)dig;
-            strcat(date,&insert);
+        arrInt[1-i]=(char)dig;
 	    sec=sec/10;
-        }
-	strcat(date,":");
+    }
+    strcat(date,arrInt);
+	strcat(date," ");
 	
 	//sets up the year and stores it in date
 	int year=t->tm_year + 1900;
+    char arrInt2[]="0000";
 	for(int i=0;i<4;i++){
-            dig=year%10;
-	    dig=dig+'0';
-            insert=(char)dig;
-            strcat(date,&insert);
+        dig=year%10;
+        dig=dig+'0';
+        arrInt2[3-i]=(char)dig;
 	    year=year/10;
-        }
+    }
+    strcat(date,arrInt2);
 	return date;
 }
 
@@ -106,9 +107,9 @@ int main(){
 	char *res;
 
 	time(&t);
-	currTime=localtime(&t);
-	res=myasctime(currTime);
-	printf("%s",res);
-	puts("");
-	return(0);
+	currTime=localtime(&t);//grabs the local time in the form of the struct tm
+    res=myasctime(currTime);//uses the currTime struct type 'tm' returns a printable current date
+    puts("Current Local Time:");
+	printf("%s\n",res);
+    exit(0);
 }
