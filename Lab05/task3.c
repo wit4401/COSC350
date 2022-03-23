@@ -57,18 +57,18 @@ char *myasctime(const struct tm *t){
 	
 	//sets up the hour of the day and stores it in date
 	int hr=t->tm_hour;
-	for(int i=0;i<2;i++){
+    for(int i=0;i<2;i++){
         dig=hr%10;
 	    dig=dig+'0';
         arrInt[1-i]=(char)dig;
 	    hr=hr/10;
     }
     strcat(date,arrInt);
-	strcat(date,":");
+    strcat(date,":");
 	
-	//sets up the min of the hour and stores it in date
-	int min=t->tm_min;
-	for(int i=0;i<2;i++){
+    //sets up the min of the hour and stores it in date
+    int min=t->tm_min;
+    for(int i=0;i<2;i++){
         dig=min%10;
         dig=dig+'0';
         arrInt[1-i]=(char)dig;
@@ -77,39 +77,37 @@ char *myasctime(const struct tm *t){
     strcat(date,arrInt);
     strcat(date,":");
 	
-	//sets up the second of the min and stores it in date
-	int sec=t->tm_sec;
-	for(int i=0;i<2;i++){
+    //sets up the second of the min and stores it in date
+    int sec=t->tm_sec;
+    for(int i=0;i<2;i++){
         dig=sec%10;
 	    dig=dig+'0';
         arrInt[1-i]=(char)dig;
 	    sec=sec/10;
     }
     strcat(date,arrInt);
-	strcat(date," ");
+    strcat(date," ");
 	
-	//sets up the year and stores it in date
-	int year=t->tm_year + 1900;
+    //sets up the year and stores it in date
+    int year=t->tm_year + 1900;
     char arrInt2[]="0000";
-	for(int i=0;i<4;i++){
+    for(int i=0;i<4;i++){
         dig=year%10;
         dig=dig+'0';
         arrInt2[3-i]=(char)dig;
 	    year=year/10;
     }
     strcat(date,arrInt2);
-	return date;
+    return date;
 }
 
 int main(){
 	const struct tm *currTime;
 	time_t t;
-	char *res;
 
 	time(&t);
 	currTime=localtime(&t);//grabs the local time in the form of the struct tm
-    res=myasctime(currTime);//uses the currTime struct type 'tm' returns a printable current date
-    puts("Current Local Time:");
-	printf("%s\n",res);
-    exit(0);
+        puts("Current Local Time:");
+	printf("%s\n",myasctime(currTime));
+        exit(0);
 }
