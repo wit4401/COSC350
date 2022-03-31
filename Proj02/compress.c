@@ -45,7 +45,7 @@ int main(int argc,char *argv[]){
     //temporary sorting of the frequency array until implement the much more efficient priority queue
     for(int i=0;i<listLen-1;i++){
     	int min=i;
-    	for(int j=i+1;j<lisLen;j++){
+    	for(int j=i+1;j<listLen;j++){
     		if(list[min].freq>list[j].freq)
     			min=j;
     	}
