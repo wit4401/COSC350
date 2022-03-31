@@ -5,6 +5,7 @@
 #include<sys/stat.h>
 #include<sys/types.h>
 
+
 struct pair{
     int freq;
     char val;
@@ -40,9 +41,20 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
-    /*
-    for(int i=0;i<listLen;i++)
-        printf("Value: '%c'\nFrequency: %d\n",list[i].val,list[i].freq);
-    */
+    
+    //temporary sorting of the frequency array until implement the much more efficient priority queue
+    for(int i=0;i<listLen-1;i++){
+    	int min=i;
+    	for(int j=i+1;j<lisLen;j++){
+    		if(list[min].freq>list[j].freq)
+    			min=j;
+    	}
+    	int fTemp=list[i].freq;
+    	char vTemp=list[i].val;
+    	list[i].freq=list[min].freq;
+    	list[i].val=list[min].val;
+    	list[min].freq=fTemp;
+    	list[min].val=vTemp;
+    }
     exit(0);
 }
