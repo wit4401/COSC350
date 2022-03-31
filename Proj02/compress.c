@@ -40,7 +40,9 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
+    /*
     for(int i=0;i<listLen;i++)
         printf("Value: '%c'\nFrequency: %d\n",list[i].val,list[i].freq);
+    */
     exit(0);
 }
