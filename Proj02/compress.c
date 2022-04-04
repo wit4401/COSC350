@@ -56,5 +56,7 @@ int main(int argc,char *argv[]){
     	list[min].freq=fTemp;
     	list[min].val=vTemp;
     }
+    for(int i=0;i<listLen;i++)
+        printf("Value: %c\nFrequency: %d\n\n",list[i].val,list[i].freq);
     exit(0);
 }
