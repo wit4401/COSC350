@@ -1,15 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
-#include<fcntl.h>
-#include<sys/stat.h>
-#include<sys/types.h>
-
-
-struct pair{
-    int freq;
-    char val;
-};
 
 int main(int argc,char *argv[]){
 	if(argc!=2){
@@ -56,7 +47,6 @@ int main(int argc,char *argv[]){
     	list[min].freq=fTemp;
     	list[min].val=vTemp;
     }
-    for(int i=0;i<listLen;i++)
-        printf("Value: %c\nFrequency: %d\n\n",list[i].val,list[i].freq);
+    compress(creatHuffTree(list));
     exit(0);
 }
