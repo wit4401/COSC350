@@ -13,7 +13,7 @@ int main(){
     srand(time(0));
     char *randStr=calloc(n,sizeof(char));
     for(int i=0;i<n;i++)
-        randStr[i]=(char) rand()%128;
+        randStr[i]=(char) rand()%128-'a';
     printf("%s\n",randStr);
     free(randStr);
     exit(0);
