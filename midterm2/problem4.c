@@ -15,8 +15,8 @@ int main(){
     for(int i=0;i<n;i++){
     	int min,max;
     	if(rand()%2==0){
-        	min=(int)'A';
-        	max=(int)'Z';
+        	min='A';
+        	max='Z';
         }
         else{
         	min=(int)'a';
