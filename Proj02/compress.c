@@ -1,6 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
+#include<fcntl.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+
+struct pair{
+    int freq;
+    char val;
+};
 
 int main(int argc,char *argv[]){
 	if(argc!=2){
@@ -14,11 +22,17 @@ int main(int argc,char *argv[]){
     }
     int rbyte;
     char b;
-    struct pair *list;
+    struct pair *list=malloc(sizeof(struct pair));
     int listLen=1;
-    read(file,&b,1);
-    list[0].val=b;
-    list[0].freq=1;
+    if(read(file,&b,1)>0{
+    	list[0].val=b;
+    	list[0].freq=1;
+    }
+    else{
+    	printf("Error! File Empty!");
+    	close(file);
+    	exit(3);
+    }
     while((rbyte=read(file,&b,1))>0){
         int add=1;
         for(int i=0;i<listLen;i++){
@@ -28,6 +42,7 @@ int main(int argc,char *argv[]){
             }
         }
         if(add){
+        	list=realloc(list,(listLen+1)*sizeof(struct pair));
             list[listLen].val=b;
             list[listLen++].freq=1;
         }
@@ -47,6 +62,14 @@ int main(int argc,char *argv[]){
     	list[min].freq=fTemp;
     	list[min].val=vTemp;
     }
-    compress(creatHuffTree(list));
+    /*
+    for(int i=0;i<listLen;i++)
+    	printf("Value: %c\nFrequency: %d\n\n",list[i].val,list[i].freq);
+    */
+    
+    //compress(file,creatHuffTree(list,listLen));
+    
+    free(list);
+    close(file);
     exit(0);
 }

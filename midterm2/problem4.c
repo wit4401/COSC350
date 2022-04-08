@@ -12,8 +12,18 @@ int main(){
     scanf("%d",&n);
     srand(time(0));
     char *randStr=calloc(n,sizeof(char));
-    for(int i=0;i<n;i++)
-        randStr[i]=(char) rand()%128-'a';
+    for(int i=0;i<n;i++){
+    	int min,max;
+    	if(rand()%2==0){
+        	min=(int)'A';
+        	max=(int)'Z';
+        }
+        else{
+        	min=(int)'a';
+        	max=(int)'z';
+        }
+        randStr[i]=(char) rand()%max+min;
+     }
     printf("%s\n",randStr);
     free(randStr);
     exit(0);
