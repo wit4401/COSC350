@@ -102,7 +102,7 @@ char *myasctime(const struct tm *t){
 }
 
 int main(){
-	struct tm *currTime=calloc(sizeof(struct tm));
+	struct tm *currTime=malloc(sizeof(struct tm));
 	time_t t;
 
 	time(&t);
