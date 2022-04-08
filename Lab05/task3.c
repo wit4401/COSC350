@@ -9,7 +9,7 @@
 #include<time.h>
 
 char *myasctime(const struct tm *t){
-	char *date; //date will contian the result to be returned
+	char *date=calloc(24,sizeof(char)); //date will contian the result to be returned
 	
 	//sets up the day of the week and stores it in date
 	char *dayW;
@@ -102,12 +102,13 @@ char *myasctime(const struct tm *t){
 }
 
 int main(){
-	const struct tm *currTime;
+	const struct tm *currTime=calloc(24,sizeof(struct tm));
 	time_t t;
 
 	time(&t);
-	currTime=localtime(&t);//grabs the local time in the form of the struct tm
-        puts("Current Local Time:");
+	currTime=localtime(&t);
+	puts("Current Local Time:");
 	printf("%s\n",myasctime(currTime));
-        exit(0);
+	free(currTime);
+	exit(0);
 }
