@@ -29,7 +29,7 @@ int main(int argc,char *argv[]){
     	list[0].freq=1;
     }
     else{
-    	printf("Error! File Empty!");
+    	printf("Error! File Empty!\n");
 	free(list);
     	close(file);
     	exit(3);
