@@ -24,19 +24,30 @@ struct huffNode{
 };
 
 huffNode *creatHuffTree(struct pair *list, int len){
-	if(len==0)
-		return NULL;
-    struct huffNode *fTree=malloc(sizeof(struct huffNode));
-    fTree->left2=malloc(sizeof(struct nodePair));
-    fTree->right=malloc(sizeof(struct nodePair));
-    fTree->left2->pair.freq=list[0].freq;
-    fTree->left2->pair.val=list[0].val;
+    struct huffNode *curr=malloc(sizeof(struct huffNode));
+    struct huffNode *startNode=malloc(sizeof(struct huffNode));
+    curr->left2=malloc(sizeof(struct nodePair));
+    curr->left2->pair=list[0];
+    
     if(len>1){
-    	
+        curr->right=malloc(sizeof(struct nodePair));
+        curr->right->pair=list[1];
+        curr->tot=curr->right->pair.freq+curr->left2->pair.freq;
+        for(int i=2;i<len;i++){
+        	if(i!=len-1){
+        		
+        	}
+        	else{
+        		startNode->right=malloc(sizeof(nodePair))
+        	}
+        }
+        
     }
-    else
-    	fTree->tot=fTree->left2->pair.freq;
-    return fTree;
+    else{
+    	curr->tot=curr->left2->pair.freq;
+    	return curr;
+    }
+    return startNode;
 }
 
 void compress(int fd,struct huffNode *tree){

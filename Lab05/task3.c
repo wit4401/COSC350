@@ -107,8 +107,7 @@ int main(){
 
 	time(&t);
 	currTime=localtime(&t);
-	puts("Current Local Time:");
-	printf("%s\n",myasctime(currTime));
+	puts("Current Local Time:");printf("%s\n",myasctime(currTime));
 	free(currTime);
 	exit(0);
 }

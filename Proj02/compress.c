@@ -22,18 +22,16 @@ int main(int argc,char *argv[]){
     }
     int rbyte;
     char b;
-    struct pair *list=malloc(sizeof(struct pair));
-    if(read(file,&b,1)>0){
-	int listLen=1;
-    	list[0].val=b;
-    	list[0].freq=1;
-    }
-    else{
+    if((rbyte=read(file,&b,1))<0){
     	printf("Error! File Empty!\n");
-	free(list);
     	close(file);
     	exit(3);
     }
+    
+    struct pair *list=malloc(sizeof(struct pair));
+    int listLen=1;
+    list[0].val=b;
+    list[0].freq=1;
     while((rbyte=read(file,&b,1))>0){
         int add=1;
         for(int i=0;i<listLen;i++){
