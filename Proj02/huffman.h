@@ -33,12 +33,25 @@ huffNode *creatHuffTree(struct pair *list, int len){
         curr->right=malloc(sizeof(struct nodePair));
         curr->right->pair=list[1];
         curr->tot=curr->right->pair.freq+curr->left2->pair.freq;
+        curr->parent=malloc(sizeof(struct huffNode));
+        curr->parent->left1=curr;
+        curr=curr->parent;
         for(int i=2;i<len;i++){
         	if(i!=len-1){
-        		
+                curr->right=malloc(sizeof(struct nodePair));
+                curr->right=list[i];
+
+                curr->parent=malloc(sizeof(struct huffNode));
+                curr->parent->left=curr;
+                curr=curr->parent;
         	}
         	else{
-        		startNode->right=malloc(sizeof(nodePair))
+                startNode->left1=malloc(sizeof(struct huffNode));
+                startNode->left1=curr;
+        		startNode->right=malloc(sizeof(struct nodePair));
+                startNode->right=list[i];
+                startNode->tot=startNode->right.freq+startNode->left.tot;
+
         	}
         }
         
