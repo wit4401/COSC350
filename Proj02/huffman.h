@@ -25,39 +25,67 @@ struct huffNode{
 
 huffNode *creatHuffTree(struct pair *list, int len){
     struct huffNode *curr=malloc(sizeof(struct huffNode));
-    struct huffNode *startNode=malloc(sizeof(struct huffNode));
+    struct huffNode *root;
     curr->left2=malloc(sizeof(struct nodePair));
-    curr->left2->pair=list[0];
-    
-    if(len>1){
-        curr->right=malloc(sizeof(struct nodePair));
-        curr->right->pair=list[1];
-        curr->tot=curr->right->pair.freq+curr->left2->pair.freq;
-        curr->parent=malloc(sizeof(struct huffNode));
-        curr->parent->left1=curr;
-        curr=curr->parent;
-        for(int i=2;i<len;i++){
-        	if(i!=len-1){
-                curr->right=malloc(sizeof(struct nodePair));
-                curr->right=list[i];
+    curr->left2->info=list[0];
 
+    //defines the parent node of left2
+    curr->left2->parent=malloc(sizeof(struct huffNode));
+    curr->left2->parent=curr;
+
+    if(len>1){
+        //creates the right value by grabbing the second pair in the 'pair' array
+        curr->right=malloc(sizeof(struct nodePair));
+        curr->right->info=list[1];
+
+        curr->right->parent=malloc(sizeof(struct huffNode));
+        curr->right->parent=curr;
+
+        //computes the total and stores the information
+        curr->tot=curr->right->info.freq+curr->left2->info.freq;
+        for(int i=2;i<len;i++){
+            if(i!=len-1){
+                //creates the parent and assigns said parent's left node to the current node
                 curr->parent=malloc(sizeof(struct huffNode));
-                curr->parent->left=curr;
+                curr->parent->left1=curr;
                 curr=curr->parent;
+
+                //creates the right node and stores the pair into it
+                curr->right=malloc(sizeof(struct nodePair));
+                curr->right->parent=malloc(sizeof(struct huffNode));
+                curr->right.info=list[i];
+                curr->right->parent=curr;
+
+                //computes the current total
+                curr.tot = curr->left1.tot + curr->right.freq;
         	}
         	else{
-                startNode->left1=malloc(sizeof(struct huffNode));
-                startNode->left1=curr;
-        		startNode->right=malloc(sizeof(struct nodePair));
-                startNode->right=list[i];
-                startNode->tot=startNode->right.freq+startNode->left.tot;
+                //stores information into the final root node
+                root= (struct huffNode*) malloc(sizeof(struct huffNode));
+                
+                //stores curr into the left of the root node
+                root->left1=malloc(sizeof(struct huffNode));
+                root->left1=curr;
+
+                //stores the final element to the right of root node
+                root->right=malloc(sizeof(struct nodePair));
+                root->right=list[i];
+                right->parent=malloc(sizeof(struct huffNode));
+                right->parent=root;
+
+                //connects the root to the curr
+                curr->parent=malloc(sizeof(struct huffNode));
+                curr->parent=root;
+
+                //computes the total for the root node
+                root->tot=root->right.freq+startNode->left.tot;
 
         	}
         }
         
     }
     else{
-    	curr->tot=curr->left2->pair.freq;
+    	curr->tot=curr->left2->info.freq;
     	return curr;
     }
     return startNode;
