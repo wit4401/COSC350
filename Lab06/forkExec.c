@@ -25,7 +25,8 @@ int main(int argc,char *argv[]){
             perror("fork failed");
             exit(1);
         case 0:
-            execl("/mnt/linuxlab/home/wtownsend2/COSC350/Lab06/child",argv[1],argv[3],NULL);
+            message="This is the child"
+            execl("/mnt/linuxlab/home/wtownsend2/COSC350/Lab06/child",message,argv[1],argv[3],NULL);
             break;
         default:
             message = "This is the parent";
