@@ -25,20 +25,18 @@ int main(int argc,char *argv[]){
             perror("fork failed");
             exit(1);
         case 0:
-            message = "This is the child";
-            n = atoi(argv[1]);
-            sec=atoi(argv[3]);
+            execl("/mnt/linuxlab/home/wtownsend2/COSC350/Lab06/child",argv[1],argv[3],NULL);
             break;
         default:
             message = "This is the parent";
             n = atoi(argv[2]);
             sec=atoi(argv[4]);
             wait(NULL);
+            for(; n > 0; n--) {
+                printf("%s. pid=%d\n",message,getpid());
+                sleep(sec);
+            }
             break;
-    }
-    for(; n > 0; n--) {
-        puts(message);
-        sleep(sec);
     }
     exit(0);
 }
