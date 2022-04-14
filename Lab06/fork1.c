@@ -3,39 +3,39 @@
 |    Will Townsend   |
 |    April  2022     |
 *********************/
+#include <sys/types.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-
-void ChildProcess(int Nc,int Tc);
-void ParentProcess(int Np,int Tp); 
-
-void main(int argc,char *argv[]){
+int main(int argc,char *argv[]){
     if(argc!=5){
-        puts("Please enter 4 values!");
+        puts("Please enter 4 arguements!");
         exit(1);
     }
-    pid_t pid, ppid;
-    pid = fork(); /* create a child */
-    if (pid == 0) /* means a child process*/
-        ChildProcess(atoi(argv[1]),atoi(argv[3]));
-    else
-        ParentProcess(atoi(argv[2]),atoi(argv[4]));
-}
-void ChildProcess(int Nc,int Tc){
-    int i;
-    for (i = 1; i <= Nc; i++){
-        printf(" This line is from child process value = %d\n", i);
-        sleep(Tc);
+    pid_t pid;
+    char *message;
+    int n;
+    int sec;
+    printf("fork program starting\n");
+    pid = fork();
+    switch(pid){
+        case -1:
+            perror("fork failed");
+            exit(1);
+        case 0:
+            message = "This is the child";
+            n = atoi(argv[1]);
+            sec=atoi(argv[3]);
+            break;
+        default:
+            message = "This is the parent";
+            n = atoi(argv[2]);
+            sec=atoi(argv[4]);
+            break;
     }
-    printf(" *** Child process is done ***\n");
-}
-void ParentProcess(int Np,int Tp){
-    int i;
-    for (i = 1; i <= Np; i++){
-        printf("This line is from parent process value = %d\n", i);
-        sleep(Tp);
+    for(; n > 0; n--) {
+        puts(message);
+        sleep(sec);
     }
-    printf("*** Parent is done ***\n");
+    exit(0);
 }
