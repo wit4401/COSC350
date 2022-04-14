@@ -15,5 +15,5 @@ int main(int argc,char *argv[]){
         printf("This is the child. pid=%d\n",getpid());
         sleep(atoi(argv[1]));
     }
-    exit(0);
+    return 37;
 }
