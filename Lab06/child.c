@@ -11,9 +11,9 @@
 #include<sys/stat.h>
 
 int main(int argc,char *argv[]){
-    for(int i=1;i<=atoi(argv[0]);i++){
-        printf("This is the child. pid=%d\n",getpid());
-        sleep(atoi(argv[1]));
+    for(int i=1;i<=atoi(argv[1]);i++){
+        printf("%s. pid=%d\n",argv[0],getpid());
+        sleep(atoi(argv[2]));
     }
     return 37;
 }
