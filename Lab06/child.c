@@ -16,5 +16,5 @@ int main(int argc,char *argv[]){
         printf("%s. pid=%d\n",argv[0],getpid());
         sleep(atoi(argv[2]));
     }
-    return 37;
+    _exit(37);
 }
