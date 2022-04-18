@@ -9,22 +9,11 @@ extern char **environ;
 
 char *mygetenv(const char *name){
     char **envVars=environ;
-    int check=1;
-    
+    int check;
+
     while(*envVars!=NULL){
-    	char *varName=malloc(sizeof(char));
-    	int len=1;
-    	varName[0]=**envVars++;
-    	while(**envVars!='='){
-    		varName=realloc(varName,(++len)*sizeof(char));
-    		strcat(varName,&**envVars);
-    		**envVars++;
-    	}
-    	if(varName==name){
-    		free(varName);
-    		return *envVars;
-    	}
-    	*envVars++;
+        
+        *envVars++;    	
     }
     return "Environment Variable not found!";
 }

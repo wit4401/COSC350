@@ -46,28 +46,14 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
-    
-    //temporary sorting of the frequency array until implement the much more efficient priority queue
-    for(int i=0;i<listLen-1;i++){
-    	int min=i;
-    	for(int j=i+1;j<listLen;j++){
-    		if(list[min].freq>list[j].freq)
-    			min=j;
-    	}
-    	int fTemp=list[i].freq;
-    	char vTemp=list[i].val;
-    	list[i].freq=list[min].freq;
-    	list[i].val=list[min].val;
-    	list[min].freq=fTemp;
-    	list[min].val=vTemp;
-    }
+
     /*
     for(int i=0;i<listLen;i++)
     	printf("Value: %c\nFrequency: %d\n\n",list[i].val,list[i].freq);
     */
     
     //compress(file,creatHuffTree(list,listLen));
-    
+
     free(list);
     close(file);
     exit(0);
