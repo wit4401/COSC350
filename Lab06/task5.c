@@ -32,7 +32,7 @@ int main(int argc,char *argv[]){
 	if(pid==0){
 		int rbytes;
 		char b;
-		int childOut=open("child.txt",O_CREAT | O_RDWR, 0755);
+		int childOut=open("child.txt",O_CREAT | O_TRUNC | O_RDWR, 0755);
 		while((rbytes=read(input,&b,1))>0){
 			if(!myIsDigit(b))
 				write(childOut,&b,rbytes);
@@ -42,7 +42,7 @@ int main(int argc,char *argv[]){
 	else if(pid>0){
 		int rbytes;
 		char b;
-		int parentOut=open("parent.txt",O_CREAT | O_RDWR, 0755);
+		int parentOut=open("parent.txt",O_CREAT | O_TRUNC | O_RDWR, 0755);
 		while((rbytes=read(input,&b,1))>0){
 			if(myIsDigit(b))
 				write(parentOut,&b,rbytes);
