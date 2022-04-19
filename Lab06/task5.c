@@ -28,12 +28,15 @@ int main(int argc,char *argv[]){
 		exit(2);
 	}
 	pid_t pid=fork();
+	off_t parentOffset=0;
+	off_t childOffset=0;
+	
 	
 	if(pid==0){
 		int rbytes;
 		char b;
 		int childOut=open("child.txt",O_CREAT | O_TRUNC | O_RDWR, 0755);
-		while((rbytes=read(input,&b,1))>0){
+		while((rbytes=pread(input,&b,1,childOffset++))>0){
 			if(!myIsDigit(b))
 				write(childOut,&b,rbytes);
 		}
@@ -43,7 +46,7 @@ int main(int argc,char *argv[]){
 		int rbytes;
 		char b;
 		int parentOut=open("parent.txt",O_CREAT | O_TRUNC | O_RDWR, 0755);
-		while((rbytes=read(input,&b,1))>0){
+		while((rbytes=pread(input,&b,1,parentOffset++))>0){
 			if(myIsDigit(b))
 				write(parentOut,&b,rbytes);
 		}

@@ -17,7 +17,12 @@ char *mygetenv(const char *name){
     int check;
 
     while(*envVars!=NULL){
-        
+        check=1;
+        int i=0;
+        while(**envVars!='='){
+            printf("%c",**envVars++);
+        }
+        puts("");
         *envVars++;    	
     }
     return "Environment Variable not found!";
@@ -30,12 +35,15 @@ int main(){
     printf("PWD: %s\n",getenv("PWD"));
     printf("SHELL: %s\n",getenv("SHELL"));
     printf("LOGNAME: %s\n",getenv("LOGNAME"));
-	puts("");
+
+    puts("");
+
 	puts("mygetenv() test results:");
     printf("%s\n",mygetenv("HOME"));
-    printf("%s\n",mygetenv("USER"));
-    printf("%s\n",mygetenv("PWD"));
-    printf("%s\n",mygetenv("SHELL"));
-    printf("%s\n",mygetenv("LOGNAME"));
-    return 0;
+    //printf("%s\n",mygetenv("USER"));
+    //printf("%s\n",mygetenv("PWD"));
+    //printf("%s\n",mygetenv("SHELL"));
+    //printf("%s\n",mygetenv("LOGNAME"));
+
+    exit(0);
 }
