@@ -40,10 +40,10 @@ int main(){
 
 	puts("mygetenv() test results:");
     printf("%s\n",mygetenv("HOME"));
-    //printf("%s\n",mygetenv("USER"));
-    //printf("%s\n",mygetenv("PWD"));
-    //printf("%s\n",mygetenv("SHELL"));
-    //printf("%s\n",mygetenv("LOGNAME"));
+    printf("%s\n",mygetenv("USER"));
+    printf("%s\n",mygetenv("PWD"));
+    printf("%s\n",mygetenv("SHELL"));
+    printf("%s\n",mygetenv("LOGNAME"));
 
     exit(0);
 }
