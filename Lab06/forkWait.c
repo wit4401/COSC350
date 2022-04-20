@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+/*Note: the outline of the program comes from our textbook only slightly modified*/
+
 int main(int argc,char *argv[]){
     if(argc!=5){
         puts("Please enter 4 arguements!");

@@ -3,10 +3,13 @@
 |    Will Townsend   |
 |    April  2022     |
 *********************/
+
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+/*Note: the outline of the program comes from our textbook only slightly modified*/
 
 int main(int argc,char *argv[]){
     if(argc!=5){

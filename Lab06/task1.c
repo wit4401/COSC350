@@ -3,6 +3,7 @@
 |    Will Townsend   |
 |    April  2022     |
 *********************/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -10,40 +11,52 @@
 #include<sys/types.h>
 #include<sys/stat.h>
 
-extern char **environ;
+extern char **environ; //adds the environmental variables to the program
 
 char *mygetenv(const char *name){
-    char **envVars=environ;
-    int check;
-
-    while(*envVars!=NULL){
-        check=1;
-        int i=0;
-        while(**envVars!='='){
-            printf("%c",**envVars++);
+    //This portion of the program loops through until it finds a variable name that is equivalent
+    for(int i=0;environ[i]!=NULL;i++){
+        int check=1;
+        for(int j=0;environ[i][j]!='=';j++){
+            if(environ[i][j]!=name[j]){
+                check=0;
+                break;
+            }
         }
-        puts("");
-        *envVars++;    	
+        //if the upper portion found that the current variable name is equivalent it grabs everthing to the
+        //left of the '=' sign
+        if(check){
+            char *result=malloc(sizeof(char));
+            int len=0;
+            int ind=1;
+            int start=0;
+            while(environ[i][len]!='\0'){
+                if(environ[i][len-1]=='=')
+                    start=1;
+                if(start){
+                    if(result[0]=='\0')
+                        result[0]=environ[i][len];
+                    else{
+                        result=realloc(result,(len+1)*sizeof(char));
+                        result[ind++]=environ[i][len];
+                    }
+                }
+                len++;
+            }
+            return result; //returns the result
+        }
     }
-    return "Environment Variable not found!";
+    return "Environment Variable not found!"; //returns if it loops through the entirety of the variables and comes up with nothing
 }
 
-int main(){
+// Main function to test the mygetenv() 
+int main(int argc,char *argv[]){
 	puts("getenv() results:");
-    printf("HOME: %s\n",getenv("HOME"));
-    printf("USER: %s\n",getenv("USER"));
-    printf("PWD: %s\n",getenv("PWD"));
-    printf("SHELL: %s\n",getenv("SHELL"));
-    printf("LOGNAME: %s\n",getenv("LOGNAME"));
+    printf("%s: %s\n",argv[1],getenv(argv[1]));
 
     puts("");
 
 	puts("mygetenv() test results:");
-    printf("%s\n",mygetenv("HOME"));
-    printf("%s\n",mygetenv("USER"));
-    printf("%s\n",mygetenv("PWD"));
-    printf("%s\n",mygetenv("SHELL"));
-    printf("%s\n",mygetenv("LOGNAME"));
-
+    printf("%s: %s\n",argv[1],mygetenv(argv[1]));
     exit(0);
 }
