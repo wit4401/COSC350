@@ -34,7 +34,7 @@ void push(struct pair** head,int frequency,char value){
     newElement->freq=frequency;
 
     //if our frequency is a higher priority (higher frequency) than the head node it will replace it as the starting node
-    if((*head)->freq>frequency){
+    if((*head)->freq>frequency||curr==NULL){
         newElement->next=*head;
         (*head)=newElement;
     }
@@ -98,7 +98,7 @@ int main(int argc,char *argv[]){
     free(list);
     printQueue(sorted);
 
-    //these line is where the compress command
+    //these lines are where the compress and buildHuffTree command
 
     //this portion frees the memory of the priority queue  
     while(sorted->next!=NULL){
