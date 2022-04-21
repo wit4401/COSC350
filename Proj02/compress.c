@@ -8,26 +8,70 @@
 struct pair{
     int freq;
     char val;
+    struct pair *next;
 };
 
+void printQueue(struct pair *curr){
+    while(curr!=NULL){
+        printf("%c:%d\n",curr->val,curr->freq);
+        curr=curr->next;
+    }
+}
+
+/*
+ * We must utilize the address of the pair structure instead of storing it into another
+ * temporary variable to be returned. This will modify it directly which is what is
+ * needed to build priority queue which is required to build the huffman coding tree
+ */
+void push(struct pair** head,int frequency,char value){
+    //stores the address into a temporary storage space
+    struct pair* curr = (*head);
+
+    //constructs the new element to be push into the pQueue
+    struct pair* newElement=malloc(sizeof(struct pair));
+    newElement->next=NULL;
+    newElement->val=value;
+    newElement->freq=frequency;
+
+    //if our frequency is a higher priority (higher frequency) than the head node it will replace it as the starting node
+    if((*head)->freq>frequency){
+        newElement->next=*head;
+        (*head)=newElement;
+    }
+    //otherwise it will find its place to be put into the queue based on its frequency 
+    else{
+        while(curr->next!=NULL&&curr->next->freq<frequency)
+            curr=curr->next;
+        newElement->next=curr->next;
+        curr->next=newElement;
+    }
+}
+
 int main(int argc,char *argv[]){
+    //checks that an arguement has been passed 
 	if(argc!=2){
         printf("Error!\n");
         exit(1);
     }
+
+    //opens the file and opens it (if not sends an error message and )
     int file=open(argv[1],O_RDONLY);
     if (file<0){
         printf("Open Error!\n");
         exit(2);
     }
+
     int rbyte;
     char b;
+
+    //makes sure the given file isn't empty
     if((rbyte=read(file,&b,1))<0){
     	printf("Error! File Empty!\n");
     	close(file);
     	exit(3);
     }
-    
+
+    //this portion finds the values and their frequencies and stores them in a dynamic array
     struct pair *list=malloc(sizeof(struct pair));
     int listLen=1;
     list[0].val=b;
@@ -47,14 +91,22 @@ int main(int argc,char *argv[]){
         }
     }
 
-    /*
+    //creates the priority queue to put all of these 
+    struct pair *sorted=malloc(sizeof(struct pair));
     for(int i=0;i<listLen;i++)
-    	printf("Value: %c\nFrequency: %d\n\n",list[i].val,list[i].freq);
-    */
-    
-    //compress(file,creatHuffTree(list,listLen));
-
+        push(&sorted,list[i].freq,list[i].val);
     free(list);
+    printQueue(sorted);
+
+    //these line is where the compress command
+
+    //this portion frees the memory of the priority queue  
+    while(sorted->next!=NULL){
+        struct pair *pop=sorted;
+        sorted=sorted->next;
+        free(pop);
+    }
+
     close(file);
     exit(0);
 }
