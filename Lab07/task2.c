@@ -5,6 +5,7 @@
 #include<signal.h>
 #include<sys/types.h>
 #include<sys/stat.h>
+#include<sys/wait.h>
 
 int main(){
     pid_t pid=fork();
