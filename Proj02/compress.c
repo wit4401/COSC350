@@ -111,6 +111,7 @@ int main(int argc,char *argv[]){
         pQueue=pQueue->next;
         free(pop);
     }
+
     close(file);
     exit(0);
 }
