@@ -18,6 +18,24 @@ void printQueue(struct pair *curr){
     }
 }
 
+//This function frees the memory allocated in the priority queue
+void freeQueue(struct pair** start){
+    struct pair* curr=(*start);
+    while(curr!=NULL){
+        struct pair *pop=curr;
+        curr=curr->next;
+        free(pop);
+    }
+}
+
+struct pair *newPair(int frequency,char value){
+    struct pair* newElement=malloc(sizeof(struct pair));
+    newElement->next=NULL;
+    newElement->val=value;
+    newElement->freq=frequency;
+    return newElement;
+}
+
 /*
  * We must utilize the address of the pair structure instead of storing it into another
  * temporary variable to be returned. This will modify it directly which is what is
@@ -25,13 +43,10 @@ void printQueue(struct pair *curr){
  */
 void push(struct pair** start,int frequency,char value){
     //stores the address into a temporary storage space
-    struct pair* curr = (*start);
+    struct pair* curr=(*start);
 
     //constructs the new element to be push into the pQueue
-    struct pair* newElement=malloc(sizeof(struct pair));
-    newElement->next=NULL;
-    newElement->val=value;
-    newElement->freq=frequency;
+    struct pair* newElement=newPair(frequency,value);
 
     //if our frequency is a higher priority (higher frequency) than the head node it will replace it as the starting node
     if((*start)->freq>frequency||(*start)==NULL){
@@ -54,34 +69,25 @@ int main(int argc,char *argv[]){
         exit(1);
     }
 
-    //opens the file and opens it (if not sends an error message and )
+    //opens the file and opens it (if not sends an error message and exits program)
     int file=open(argv[1],O_RDONLY);
     if (file<0){
         printf("Open Error!\n");
         exit(2);
     }
 
-    int rbyte;
-    char b;
-
-    //makes sure the given file isn't empty
-    if((rbyte=read(file,&b,1))<0){
-    	printf("Error! File Empty!\n");
-    	close(file);
-    	exit(3);
-    }
-
     //this portion finds the values and their frequencies and stores them in a dynamic array
     struct pair *list=malloc(sizeof(struct pair));
-    int listLen=1;
-    list[0].val=b;
-    list[0].freq=1;
+    int rbyte;
+    char b;
+    int listLen=0;
     while((rbyte=read(file,&b,1))>0){
         int add=1;
         for(int i=0;i<listLen;i++){
             if(list[i].val==b){
                 list[i].freq++;
                 add=0;
+                break;
             }
         }
         if(add){
@@ -94,7 +100,7 @@ int main(int argc,char *argv[]){
     //temporary print out to test the frequency array
     for(int i=0;i<listLen;i++)
         printf("%c:%d\n",list[i].val,list[i].freq);
-
+    
     //creates the priority queue to put all of these
     struct pair *pQueue=malloc(sizeof(struct pair));
     for(int i=0;i<listLen;i++)
@@ -103,15 +109,9 @@ int main(int argc,char *argv[]){
 
     printQueue(pQueue); //temporary print out to test the elements of the priority queue
 
-    //these lines are where the compress and creatHuffTree command
-
-    //this portion frees the memory of the priority queue 
-    while(pQueue->next!=NULL){
-        struct pair *pop=pQueue;
-        pQueue=pQueue->next;
-        free(pop);
-    }
-
+    //these lines are where the compress and creatHuffTree command 
+    
+    freeQueue(&pQueue);
     close(file);
     exit(0);
 }
