@@ -23,9 +23,9 @@ void printQueue(struct pair *curr){
  * temporary variable to be returned. This will modify it directly which is what is
  * needed to build priority queue which is required to build the huffman coding tree
  */
-void push(struct pair** head,int frequency,char value){
+void push(struct pair** start,int frequency,char value){
     //stores the address into a temporary storage space
-    struct pair* curr = (*head);
+    struct pair* curr = (*start);
 
     //constructs the new element to be push into the pQueue
     struct pair* newElement=malloc(sizeof(struct pair));
@@ -34,9 +34,9 @@ void push(struct pair** head,int frequency,char value){
     newElement->freq=frequency;
 
     //if our frequency is a higher priority (higher frequency) than the head node it will replace it as the starting node
-    if((*head)->freq>frequency||curr==NULL){
-        newElement->next=*head;
-        (*head)=newElement;
+    if((*start)->freq>frequency||(*start)==NULL){
+        newElement->next=(*start);
+        (*start)=newElement;
     }
     //otherwise it will find its place to be put into the queue based on its frequency 
     else{
@@ -91,22 +91,26 @@ int main(int argc,char *argv[]){
         }
     }
 
-    //creates the priority queue to put all of these 
-    struct pair *sorted=malloc(sizeof(struct pair));
+    //temporary print out to test the frequency array
     for(int i=0;i<listLen;i++)
-        push(&sorted,list[i].freq,list[i].val);
+        printf("%c:%d\n",list[i].val,list[i].freq);
+
+    //creates the priority queue to put all of these
+    struct pair *pQueue=malloc(sizeof(struct pair));
+    for(int i=0;i<listLen;i++)
+        push(&pQueue,list[i].freq,list[i].val);
     free(list);
-    printQueue(sorted);
 
-    //these lines are where the compress and buildHuffTree command
+    printQueue(pQueue); //temporary print out to test the elements of the priority queue
 
-    //this portion frees the memory of the priority queue  
-    while(sorted->next!=NULL){
-        struct pair *pop=sorted;
-        sorted=sorted->next;
+    //these lines are where the compress and creatHuffTree command
+
+    //this portion frees the memory of the priority queue 
+    while(pQueue->next!=NULL){
+        struct pair *pop=pQueue;
+        pQueue=pQueue->next;
         free(pop);
     }
-
     close(file);
     exit(0);
 }
