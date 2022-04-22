@@ -24,11 +24,16 @@ void printQueue(struct qNode *start){
 }
 
 //This function frees the memory allocated in the priority queue  
-void pop(struct qNode*& start){
+void pop(struct qNode **start){
+    while((*start)!=NULL){
+        struct qNode *pop=(*start);
+        (*start)=(*start)->next;
+        free(pop);
+    }
 }
 
 struct qNode *newPair(struct pair newInfo){
-    struct qNode newNode=malloc(sizeof(struct qNode));
+    struct qNode *newNode=malloc(sizeof(struct qNode));
     newNode->next=NULL;
     newNode->info=newInfo;
 }
@@ -38,7 +43,18 @@ struct qNode *newPair(struct pair newInfo){
  * temporary variable to be returned. This will modify it directly which is what is
  * needed to build priority queue which is required to build the huffman coding tree
  */
-void push(struct qNode*& start,int frequency,char value){
+void push(struct qNode **start,struct qNode *newNode){
+    struct qNode *curr=(*start);
+    if(curr==NULL || newNode->info.freq < curr->info.freq){
+        newNode->next=(*start);
+        (*start)=newNode;
+    }
+    else{
+        while(curr->next != NULL && curr->next->info.freq < newNode->info.freq)
+            curr=curr->next;
+        newNode->next = curr->next;
+        curr->next=newNode;
+    }
 }
 
 int main(int argc,char *argv[]){
@@ -75,21 +91,20 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
-
-    //temporary print out to test the frequency array
-    for(int i=0;i<listLen;i++)
-        printf("%c:%d\n",list[i].val,list[i].freq);
     
     //creates the priority queue to put all of these
     struct qNode *pQueue=malloc(sizeof(struct qNode));
-    for(int i=0;i<listLen;i++)
-        push(pQueue,list[i].freq,list[i].val);
+    for(int i=0;i<listLen;i++){
+        struct qNode *newElement=newPair(list[i]);
+        push(&pQueue,newElement);
+    }
     free(list);
 
     printQueue(pQueue); //temporary print out to test the elements of the priority queue
 
     //these lines are where the compress and creatHuffTree command 
-    
+
+    pop(&pQueue);//this function (for now) free all allocated data in the priority queue
     close(file);
     exit(0);
 }
