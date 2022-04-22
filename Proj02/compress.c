@@ -8,31 +8,35 @@
 struct pair{
     int freq;
     char val;
-    struct pair *next;
 };
 
-void printQueue(struct pair *curr){
+struct qNode{
+    struct qNode *next;
+    struct pair info;
+};
+
+void printQueue(struct qNode *curr){
     while(curr!=NULL){
-        printf("%c:%d\n",curr->val,curr->freq);
+        printf("%c:%d\n",curr->info.val,curr->info.freq);
         curr=curr->next;
     }
 }
 
-//This function frees the memory allocated in the priority queue
-void freeQueue(struct pair** start){
-    struct pair* curr=(*start);
+//This function frees the memory allocated in the priority queue  
+void freeQueue(struct qNode** start){
+    struct qNode* curr=(*start);
     while(curr!=NULL){
-        struct pair *pop=curr;
+        struct qNode *pop=curr;
         curr=curr->next;
         free(pop);
     }
 }
 
-struct pair *newPair(int frequency,char value){
-    struct pair* newElement=malloc(sizeof(struct pair));
+struct qNode *newPair(int frequency,char value){
+    struct qNode* newElement=malloc(sizeof(struct pair));
     newElement->next=NULL;
-    newElement->val=value;
-    newElement->freq=frequency;
+    newElement->info.val=value;
+    newElement->info.freq=frequency;
     return newElement;
 }
 
@@ -41,21 +45,21 @@ struct pair *newPair(int frequency,char value){
  * temporary variable to be returned. This will modify it directly which is what is
  * needed to build priority queue which is required to build the huffman coding tree
  */
-void push(struct pair** start,int frequency,char value){
+void push(struct qNode** start,int frequency,char value){
     //stores the address into a temporary storage space
-    struct pair* curr=(*start);
+    struct qNode* curr=(*start);
 
-    //constructs the new element to be push into the pQueue
-    struct pair* newElement=newPair(frequency,value);
+    //constructs the new element to be push into the pQueue 
+    struct qNode* newElement=newPair(frequency,value);
 
     //if our frequency is a higher priority (higher frequency) than the head node it will replace it as the starting node
-    if((*start)->freq>frequency||(*start)==NULL){
+    if((*start)->info.freq>frequency||(*start)==NULL){
         newElement->next=(*start);
         (*start)=newElement;
     }
     //otherwise it will find its place to be put into the queue based on its frequency 
     else{
-        while(curr->next!=NULL&&curr->next->freq<frequency)
+        while(curr->next!=NULL&&curr->next->info.freq<frequency)
             curr=curr->next;
         newElement->next=curr->next;
         curr->next=newElement;
@@ -102,7 +106,7 @@ int main(int argc,char *argv[]){
         printf("%c:%d\n",list[i].val,list[i].freq);
     
     //creates the priority queue to put all of these
-    struct pair *pQueue=malloc(sizeof(struct pair));
+    struct qNode *pQueue=malloc(sizeof(struct qNode));
     for(int i=0;i<listLen;i++)
         push(&pQueue,list[i].freq,list[i].val);
     free(list);
