@@ -33,9 +33,10 @@ void pop(struct qNode **start){
 }
 
 struct qNode *newPair(struct pair newInfo){
-    struct qNode *newNode=malloc(sizeof(struct qNode));
+    struct qNode *newNode=(struct qNode *)malloc(sizeof(struct qNode));
     newNode->next=NULL;
     newNode->info=newInfo;
+    return newNode;
 }
 
 /*
@@ -93,7 +94,7 @@ int main(int argc,char *argv[]){
     }
     
     //creates the priority queue to put all of these
-    struct qNode *pQueue=malloc(sizeof(struct qNode));
+    struct qNode *pQueue=(struct qNode *)malloc(sizeof(struct qNode));
     for(int i=0;i<listLen;i++){
         struct qNode *newElement=newPair(list[i]);
         push(&pQueue,newElement);
