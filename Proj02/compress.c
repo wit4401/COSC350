@@ -11,8 +11,8 @@ struct pair{
 };
 
 struct qNode{
-    struct qNode *next;
     struct pair info;
+    struct qNode *next;
 };
 
 void printQueue(struct qNode *start){
@@ -43,17 +43,17 @@ void pop(struct qNode **start){
  * needed to build priority queue which is required to build the huffman coding tree
  */
 void push(struct qNode **start,struct qNode *newNode){
-    if((*start)==NULL || newNode->info.freq < (*start)->info.freq){
+    //if((*start)==NULL || newNode->info.freq < (*start)->info.freq){
         newNode->next=(*start);
         (*start)=newNode;
-    }
+    /*}
     else{
         struct qNode *curr=(*start);
         while(curr->next != NULL && curr->next->info.freq < newNode->info.freq)
             curr=curr->next;
         newNode->next = curr->next;
         curr->next=newNode;
-    }
+    }*/
 }
 
 int main(int argc,char *argv[]){
@@ -92,7 +92,7 @@ int main(int argc,char *argv[]){
     }
     
     //creates the priority queue to put all of these
-    struct qNode *pQueue=malloc(sizeof(struct qNode));
+    struct qNode *pQueue;
     for(int i=0;i<listLen;i++)
         push(&pQueue,newPair(list[i]));
     free(list);
