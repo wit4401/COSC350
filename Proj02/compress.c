@@ -23,20 +23,18 @@ void printQueue(struct qNode *start){
     }
 }
 
-//This function frees the memory allocated in the priority queue  
-void pop(struct qNode **start){
-    while((*start)!=NULL){
-        struct qNode *pop=(*start);
-        (*start)=(*start)->next;
-        free(pop);
-    }
-}
-
 struct qNode *newPair(struct pair newInfo){
-    struct qNode *newNode=(struct qNode *)malloc(sizeof(struct qNode));
+    struct qNode *newNode=malloc(sizeof(struct qNode));
     newNode->next=NULL;
     newNode->info=newInfo;
     return newNode;
+}
+
+//This function frees the memory allocated in the priority queue
+void pop(struct qNode **start){
+    struct qNode *pop=(*start);
+    (*start)=(*start)->next;
+    free(pop);
 }
 
 /*
@@ -46,7 +44,7 @@ struct qNode *newPair(struct pair newInfo){
  */
 void push(struct qNode **start,struct qNode *newNode){
     struct qNode *curr=(*start);
-    if(curr==NULL || newNode->info.freq < curr->info.freq){
+    if(newNode->info.freq < (*start)->info.freq){
         newNode->next=(*start);
         (*start)=newNode;
     }
@@ -94,18 +92,19 @@ int main(int argc,char *argv[]){
     }
     
     //creates the priority queue to put all of these
-    struct qNode *pQueue=(struct qNode *)malloc(sizeof(struct qNode));
-    for(int i=0;i<listLen;i++){
-        struct qNode *newElement=newPair(list[i]);
-        push(&pQueue,newElement);
-    }
+    struct qNode *pQueue=malloc(sizeof(struct qNode));
+    for(int i=0;i<listLen;i++)
+        push(&pQueue,newPair(list[i]));
     free(list);
 
     printQueue(pQueue); //temporary print out to test the elements of the priority queue
 
     //these lines are where the compress and creatHuffTree command 
 
-    pop(&pQueue);//this function (for now) free all allocated data in the priority queue
-    close(file);
+    //this frees all allocated data in the priority queue 
+    while((listLen--)>0)
+        pop(&pQueue);
+
+    close(file);//closes the original file
     exit(0);
 }
