@@ -43,12 +43,15 @@ void pop(struct qNode **start){
  * needed to build priority queue which is required to build the huffman coding tree
  */
 void push(struct qNode **start,struct qNode *newNode){
-    struct qNode *curr=(*start);
-    if(newNode->info.freq < (*start)->info.freq){
+    if((*start)==NULL){
+        (*start)=newNode;
+    }
+    else if(newNode->info.freq < (*start)->info.freq){
         newNode->next=(*start);
         (*start)=newNode;
     }
     else{
+        struct qNode *curr=(*start);
         while(curr->next != NULL && curr->next->info.freq < newNode->info.freq)
             curr=curr->next;
         newNode->next = curr->next;
