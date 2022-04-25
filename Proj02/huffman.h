@@ -34,8 +34,14 @@ struct qNode *newPair(struct pair newInfo){
 //This function frees allocated off the head element 
 void pop(struct qNode **start){
     struct qNode *curr=(*start);
-    while(curr->next!=NULL)
-        curr=curr->next;
+    if(curr->next!=NULL){
+        while(curr->next->next!=NULL)
+           curr=curr->next;
+        struct qNode *popped=curr->next;
+        curr->next=NULL;
+        free(popped);
+        return;
+    }
     free(curr);
 }
 
@@ -57,7 +63,9 @@ void push(struct qNode **start,struct qNode *newNode){
 }
 
 struct treeNode{
-    struct node *parent,*left,*right;
+    struct treeNode *parent;
+    struct treeNode *left;
+    struct treeNode *right;
     struct pair info;
 };
 
