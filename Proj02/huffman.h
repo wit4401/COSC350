@@ -23,6 +23,7 @@ void printQueue(struct qNode *start){
     }
 }
 
+//function that constructs a new pair for the priority queue
 struct qNode *newPair(struct pair newInfo){
     struct qNode *newNode=malloc(sizeof(struct qNode));
     newNode->next=NULL;
@@ -30,11 +31,12 @@ struct qNode *newPair(struct pair newInfo){
     return newNode;
 }
 
-//This function frees the memory allocated in the priority queue
+//This function frees allocated off the head element 
 void pop(struct qNode **start){
-    struct qNode *pop=(*start);
-    (*start)=(*start)->next;
-    free(pop);
+    struct qNode *curr=(*start);
+    while(curr->next!=NULL)
+        curr=curr->next;
+    free(curr);
 }
 
 //We must utilize the address of the pair structure instead of storing it into another
@@ -60,6 +62,7 @@ struct treeNode{
 };
 
 struct treeNode *creatTree(struct qNode *list,int len){
+    
     return NULL;
 }
 
