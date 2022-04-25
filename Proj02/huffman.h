@@ -74,8 +74,8 @@ struct treeNode *creatTree(struct qNode *list,int len){
     return NULL;
 }
 
-void compress(int fd,struct treeNode *tree){
+void compress(int fd,struct treeNode *root){
 }
 
-void uncompress(int fd,struct treeNode *tree){
+void uncompress(int fd,struct treeNode *root){
 }
