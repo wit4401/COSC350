@@ -70,6 +70,3 @@ void compress(int fd,struct treeNode *tree){
 
 void uncompress(int fd,struct treeNode *tree){
 }
-
-void pairPush(){
-}
