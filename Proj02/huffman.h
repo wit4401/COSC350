@@ -55,13 +55,11 @@ void push(struct qNode **start,struct qNode *newNode){
 }
 
 struct treeNode{
-    struct node *parent;
-    struct node *left;
-    struct node *right;
+    struct node *parent,*left,*right;
     struct pair info;
 };
 
-struct treeNode *creatHuffTree(struct pair *list, int len){
+struct treeNode *creatTree(struct qNode *list,int len){
     return NULL;
 }
 
