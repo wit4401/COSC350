@@ -16,14 +16,13 @@ void handler(int signo){
     return;
 }
 
-int main(){
+int main()
+    sigset_t set;//initializes a set of signals
+    int i=1;//tracks the number in the loop
 
-    sigset_t set;
-    int i=1;
-
-    sigaddset(&set,SIGINT);
-    sigaddset(&set,SIGQUIT);
-    sigprocmask(SIG_BLOCK,&set,NULL);
+    sigaddset(&set,SIGINT);//adds SIGINT to set
+    sigaddset(&set,SIGQUIT);//adds SIGQUIT to set
+    sigprocmask(SIG_BLOCK,&set,NULL);//blocks both SIGINT and SIGQUIT
 
     while(i<=5){
         printf("%d\n", i++);
@@ -32,13 +31,13 @@ int main(){
 
     puts("");
 
-    sigemptyset(&set);
-    sigaddset(&set,SIGQUIT);
-    sigprocmask(SIG_UNBLOCK,&set,NULL);
+    sigemptyset(&set);//empties the set of signals 
+    sigaddset(&set,SIGQUIT);//adds SIGQUIT to be unblocked 
+    sigprocmask(SIG_UNBLOCK,&set,NULL);//unblocks the SIGQUIT (^\)
 
-    signal(SIGQUIT,handler);
+    signal(SIGQUIT,handler);//catches ^\ if inputed above
 
-    i=1;
+    i=1;//resets for the next loop
     while(i<=5){
         printf("%d\n", i++);
         sleep(1);
