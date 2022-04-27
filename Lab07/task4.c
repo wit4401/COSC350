@@ -19,7 +19,7 @@ int main(){
 
     sigaddset(&set,SIGINT);
     sigaddset(&set,SIGQUIT);
-    sigprocmask(SIG_BLOCK,&set1,NULL);
+    sigprocmask(SIG_BLOCK,&set,NULL);
 
     while(i<=5){
         printf("%d\n", i++);
@@ -30,7 +30,7 @@ int main(){
 
     sigemptyset(&set);
     sigaddset(&set,SIGINT);
-    sigprocmask(SIG_BLOCK,&set2,NULL);
+    sigprocmask(SIG_BLOCK,&set,NULL);
 
     i=1;
     while(i<=5){
