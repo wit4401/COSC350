@@ -58,10 +58,6 @@ void push(struct qNode **start,struct qNode *newNode){
     }
 }
 
-struct qNode *peek(struct qNode **head){
-    return (*head)->tNode;
-}
-
 struct treeNode *creatTree(struct qNode *list){
     struct qNode *curr=list;
     while(curr->next!=NULL){
