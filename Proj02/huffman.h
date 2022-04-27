@@ -62,6 +62,7 @@ struct treeNode *creatTree(struct qNode *list){
     struct qNode *curr=list;
     while(curr->next!=NULL){
         struct qNode *newQNode=malloc(sizeof(struct qNode));
+        newQNode->tNode=malloc(sizeof(struct treeNode));
         newQNode->tNode->pairInfo.val='\0';
 
         newQNode->tNode->left=curr->tNode;

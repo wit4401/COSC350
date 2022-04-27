@@ -48,7 +48,7 @@ int main(int argc,char *argv[]){
     free(list);
 
     //these lines are where the compress and creatHuffTree command 
-    creatHuffTree(pQueue);
+    creatTree(pQueue);
 
     //this frees all allocated data in the priority queue  
     while((--listLen)>0)
