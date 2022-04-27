@@ -13,10 +13,10 @@
 #include<sys/signal.h>
 
 void handler(int signo){
-    return;
+    signal(signo,SIG_DFL);//catches the signal and stops it from executing after unblocked
 }
 
-int main()
+int main(){
     sigset_t set;//initializes a set of signals
     int i=1;//tracks the number in the loop
 
@@ -24,18 +24,20 @@ int main()
     sigaddset(&set,SIGQUIT);//adds SIGQUIT to set
     sigprocmask(SIG_BLOCK,&set,NULL);//blocks both SIGINT and SIGQUIT
 
+    signal(SIGQUIT,handler);//catches signal if sent in the first loop
+
     while(i<=5){
         printf("%d\n", i++);
         sleep(1);
     }
-
+    
     puts("");
+
+    kill(getpid(),SIGQUIT);//this send the SIGQUIT to current process in case never sent by user above
 
     sigemptyset(&set);//empties the set of signals 
     sigaddset(&set,SIGQUIT);//adds SIGQUIT to be unblocked 
     sigprocmask(SIG_UNBLOCK,&set,NULL);//unblocks the SIGQUIT (^\)
-
-    signal(SIGQUIT,handler);//catches ^\ if inputed above
 
     i=1;//resets for the next loop
     while(i<=5){
