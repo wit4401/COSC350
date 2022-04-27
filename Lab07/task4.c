@@ -14,12 +14,12 @@
 
 int main(){
 
-    sigset_t set1,set2;
+    sigset_t set;
     int i=1;
 
-    sigaddset(&set1,SIGINT);
-    sigaddset(&set1,SIGQUIT);
-    sigprocmask(SIG_BLOCK,&set1,&set2);
+    sigaddset(&set,SIGINT);
+    sigaddset(&set,SIGQUIT);
+    sigprocmask(SIG_BLOCK,&set1,NULL);
 
     while(i<=5){
         printf("%d\n", i++);
@@ -28,10 +28,9 @@ int main(){
 
     puts("");
 
-    sigemptyset(&set2);
-    sigemptyset(&set1);
-    sigaddset(&set2,SIGINT);
-    sigprocmask(SIG_BLOCK,&set2,&set1);
+    sigemptyset(&set);
+    sigaddset(&set,SIGINT);
+    sigprocmask(SIG_BLOCK,&set2,NULL);
 
     i=1;
     while(i<=5){
