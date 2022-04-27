@@ -12,6 +12,10 @@
 #include<sys/stat.h>
 #include<sys/signal.h>
 
+void handler(int signo){
+    signal(SIGQUIT,SIG_DFL);
+}
+
 int main(){
 
     sigset_t set;
@@ -30,10 +34,9 @@ int main(){
 
     sigemptyset(&set);
     sigaddset(&set,SIGQUIT);
-
     sigprocmask(SIG_UNBLOCK,&set,NULL);
 
-    signal(SIGQUIT,SIG_IGN);
+    signal(SIGQUIT,handler);
 
     i=1;
     while(i<=5){
