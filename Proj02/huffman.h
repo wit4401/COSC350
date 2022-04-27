@@ -10,68 +10,83 @@ struct pair{
     char val;
 };
 
-struct qNode{
-    struct pair info;
-    struct qNode *next;
+struct treeNode{
+    struct treeNode *parent;
+    struct treeNode *left;
+    struct treeNode *right;
+    struct pair pairInfo;
 };
 
-void printQueue(struct qNode *start){
-    struct qNode *curr=start;
-    while(curr!=NULL){
-        printf("%c:%d\n",curr->info.val,curr->info.freq);
-        curr=curr->next;
-    }
-}
+struct qNode{
+    struct qNode *next;
+    struct treeNode *tNode;
+};
 
 //function that constructs a new pair for the priority queue
 struct qNode *newPair(struct pair newInfo){
     struct qNode *newNode=malloc(sizeof(struct qNode));
     newNode->next=NULL;
-    newNode->info=newInfo;
+    newNode->tNode=malloc(sizeof(struct treeNode));
+    newNode->tNode->pairInfo=newInfo;
+    newNode->tNode->parent=NULL;
+    newNode->tNode->right=NULL;
+    newNode->tNode->left=NULL;
     return newNode;
 }
 
-//This function frees allocated off the head element 
+//This function frees allocated memory of the appropriate element
 void pop(struct qNode **start){
-    struct qNode *curr=(*start);
-    if(curr->next!=NULL){
-        while(curr->next->next!=NULL)
-           curr=curr->next;
-        struct qNode *popped=curr->next;
-        curr->next=NULL;
-        free(popped);
-        return;
-    }
-    free(curr);
+    struct qNode *popped=curr;
+    curr=curr->next;
+    free(popped);
 }
 
 //We must utilize the address of the pair structure instead of storing it into another
 //temporary variable to be returned. This will modify it directly which is what is
-//needed to build priority queue which is required to build the huffman coding tree 
+//needed to build priority queue which is required to build the huffman coding tree
 void push(struct qNode **start,struct qNode *newNode){
-    if(newNode->info.freq < (*start)->info.freq){
+    if(newNode->tNode->pairInfo.freq < (*start)->tNode->pairInfo.freq){
         newNode->next=(*start);
         (*start)=newNode;
     }
     else{
         struct qNode *curr=(*start);
-        while(curr->next != NULL && curr->next->info.freq < newNode->info.freq)
+        while(curr->next != NULL && curr->next->tNode->pairInfo.freq < newNode->tNode->pairInfo.freq)
             curr=curr->next;
         newNode->next = curr->next;
         curr->next=newNode;
     }
 }
 
-struct treeNode{
-    struct treeNode *parent;
-    struct treeNode *left;
-    struct treeNode *right;
-    struct pair info;
-};
+struct qNode *peek(struct qNode **head){
+    return (*head)->tNode;
+}
 
-struct treeNode *creatTree(struct qNode *list,int len){
-    
-    return NULL;
+struct treeNode *creatTree(struct qNode *list){
+    struct qNode *curr=list;
+    while(curr->next!=NULL){
+        struct qNode *newQNode=malloc(sizeof(struct qNode));
+        newQNode->tNode->pairInfo.val='\0';
+
+        newQNode->tNode->left=curr->tNode;
+        int lFreq=newQNode->tNode->left->pairInfo.freq;
+        pop(curr);
+
+        newQNode->tNode->right=curr->tNode;
+        int rFreq=newQNode->tNode->right->pairInfo.freq;
+        pop(curr);
+
+        newQNode->tNode->pairInfo.freq=rFreq+lFreq;
+        newQNode->tNode->parent=NULL;
+        newQNode->tNode->right->parent=newQNode;
+        newQNode->tNode->left->parent=newQNode;
+
+        if(curr!=NULL)
+            push(&curr,newQNode);
+        else
+            curr=newQNode;
+    }
+    return curr->tNode;
 }
 
 void compress(int fd,struct treeNode *root){

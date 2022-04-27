@@ -47,10 +47,10 @@ int main(int argc,char *argv[]){
         push(&pQueue,newPair(list[i]));
     free(list);
 
-    //these lines are where the compress and creatHuffTree command
+    //these lines are where the compress and creatHuffTree command 
     creatHuffTree(pQueue,listLen);
 
-    //this frees all allocated data in the priority queue 
+    //this frees all allocated data in the priority queue  
     while((--listLen)>0)
         pop(&pQueue);
 
