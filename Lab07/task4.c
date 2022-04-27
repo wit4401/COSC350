@@ -27,7 +27,8 @@ int main(){
     }
 
     puts("");
-
+    
+    sigprocmask(SIG_UNBLOCK,&set,NULL)
     sigemptyset(&set);
     sigaddset(&set,SIGINT);
     sigprocmask(SIG_BLOCK,&set,NULL);
