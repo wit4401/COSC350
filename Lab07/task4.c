@@ -27,11 +27,11 @@ int main(){
     }
 
     puts("");
-    
-    sigprocmask(SIG_UNBLOCK,&set,NULL);
+
     sigemptyset(&set);
-    sigaddset(&set,SIGINT);
-    sigprocmask(SIG_BLOCK,&set,NULL);
+    sigaddset(&set,SIGQUIT);
+
+    sigprocmask(SIG_UNBLOCK,&set,NULL);
 
     i=1;
     while(i<=5){
