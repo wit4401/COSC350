@@ -13,7 +13,7 @@
 #include<sys/signal.h>
 
 void handler(int signo){
-    signal(SIGQUIT,SIG_DFL);
+    return;
 }
 
 int main(){
