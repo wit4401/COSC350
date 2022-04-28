@@ -40,7 +40,6 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
-    
     //creates the priority queue to put all of these 
     struct qNode *pQueue=newPair(list[0]);
     for(int i=1;i<listLen;i++)
@@ -48,10 +47,15 @@ int main(int argc,char *argv[]){
     free(list);
 
     //these lines are where the compress and creatHuffTree command 
-    creatTree(pQueue);
+    struct treeNode *huffTree=creatTree(pQueue);
+    int *codes=calloc(listLen,sizeof(int));
+    printTreeNodes(huffTree);
+    //printcodes(huffTree,codes,0);
+    free(codes);
+    //compress(file,huffTree);
 
     //this frees all allocated data in the priority queue  
-    while((--listLen)>0)
+    while((listLen--)>0)
         pop(&pQueue);
 
     close(file);//closes the original file

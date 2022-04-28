@@ -36,9 +36,18 @@ struct qNode *newPair(struct pair newInfo){
 
 //This function frees allocated memory of the appropriate element
 void pop(struct qNode **start){
-    struct qNode *popped=curr;
-    curr=curr->next;
+    struct qNode *popped=(*start);
+    (*start)=(*start)->next;
+    free(popped->tNode);
     free(popped);
+}
+
+void printQueue(struct qNode *start){
+    struct qNode *curr=start;
+    while(curr!=NULL){
+        printf("%c:%d\n",curr->tNode->pairInfo.val,curr->tNode->pairInfo.freq);
+        curr=curr->next;
+    }
 }
 
 //We must utilize the address of the pair structure instead of storing it into another
@@ -63,20 +72,21 @@ struct treeNode *creatTree(struct qNode *list){
     while(curr->next!=NULL){
         struct qNode *newQNode=malloc(sizeof(struct qNode));
         newQNode->tNode=malloc(sizeof(struct treeNode));
+        newQNode->next=NULL;
         newQNode->tNode->pairInfo.val='\0';
 
         newQNode->tNode->left=curr->tNode;
-        int lFreq=newQNode->tNode->left->pairInfo.freq;
-        pop(curr);
+        int lFreq=curr->tNode->pairInfo.freq;
+        pop(&curr);
 
         newQNode->tNode->right=curr->tNode;
-        int rFreq=newQNode->tNode->right->pairInfo.freq;
-        pop(curr);
+        int rFreq=curr->tNode->pairInfo.freq;
+        pop(&curr);
 
         newQNode->tNode->pairInfo.freq=rFreq+lFreq;
         newQNode->tNode->parent=NULL;
-        newQNode->tNode->right->parent=newQNode;
-        newQNode->tNode->left->parent=newQNode;
+        newQNode->tNode->right->parent=newQNode->tNode;
+        newQNode->tNode->left->parent=newQNode->tNode;
 
         if(curr!=NULL)
             push(&curr,newQNode);
@@ -84,6 +94,46 @@ struct treeNode *creatTree(struct qNode *list){
             curr=newQNode;
     }
     return curr->tNode;
+}
+
+void printTreeNodes(struct treeNode *root){
+    if(root->left!=NULL){
+        printTreeNodes(root->left);
+        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
+        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
+        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+    }
+    if(root->right!=NULL){
+        printTreeNodes(root->right);
+        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
+        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
+        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+    }
+    else{
+        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
+        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
+        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+    }
+}
+
+void printcodes(struct treeNode *root,int code[],int top){
+    if(root->left!=NULL){
+        code[top]=0;
+        printcodes(root->left,code,top++);
+    }
+    if(root->right!=NULL){
+        code[top]=1;
+        printcodes(root->right,code,top++);
+    }
+    if(root->left==NULL && root->right==NULL){
+        printf("%c:",root->pairInfo.val);
+        for(int i=0;i<top;i++)
+            printf("%d",code[i]);
+        puts("");
+    }
 }
 
 void compress(int fd,struct treeNode *root){
