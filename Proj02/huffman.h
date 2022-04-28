@@ -140,11 +140,11 @@ void printTreeNodes(struct treeNode *root){
 void printcodes(struct treeNode *root,int code[],int top){
     if(root->left!=NULL){
         code[top]=0;
-        printcodes(root->left,code,top++);
+        printcodes(root->left,code,++top);
     }
     if(root->right!=NULL){
         code[top]=1;
-        printcodes(root->right,code,top++);
+        printcodes(root->right,code,++top);
     }
     if(root->left==NULL && root->right==NULL){
         printf("%c:",root->pairInfo.val);
