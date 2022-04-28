@@ -50,7 +50,7 @@ int main(int argc,char *argv[]){
     struct treeNode *huffTree=creatTree(pQueue);
     int *codes=calloc(listLen,sizeof(int));
     printTreeNodes(huffTree);
-    //printcodes(huffTree,codes,0);
+    printcodes(huffTree,codes,0);
     free(codes);
     //compress(file,huffTree);
 

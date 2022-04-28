@@ -38,7 +38,7 @@ struct qNode *newPair(struct pair newInfo){
 void pop(struct qNode **start){
     struct qNode *popped=(*start);
     (*start)=(*start)->next;
-    free(popped->tNode);
+    //free(popped->tNode);
     free(popped);
 }
 
@@ -99,23 +99,41 @@ struct treeNode *creatTree(struct qNode *list){
 void printTreeNodes(struct treeNode *root){
     if(root->left!=NULL){
         printTreeNodes(root->left);
-        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
-        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
-        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
+        if(root->parent!=NULL)
+            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        else
+            printf("Parent info: NULL\n");
+        if(root->right!=NULL)
+            printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
+        else
+            printf("Right Child info: NULL\n");
+        printf("Left Child info: %c:%d\n",root->left->pairInfo.val,root->left->pairInfo.freq);
+        puts("");
     }
     if(root->right!=NULL){
         printTreeNodes(root->right);
-        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
-        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
-        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
+        if(root->parent!=NULL)
+            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        else
+            printf("Parent info: NULL\n");
+        printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
+        if(root->left!=NULL)
+            printf("Left Child info: %c:%d\n",root->left->pairInfo.val,root->left->pairInfo.freq);
+        else
+            printf("Left Child info: NULL\n");
+        puts("");
     }
-    else{
-        printf("Node info: %c:%d",root->pairInfo.val,root->pairInfo.freq);
-        printf("Parent info: %c:%d",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        printf("Right Child info: %c:%d",root->right->pairInfo.val,root->right->pairInfo.freq);
-        printf("Left Child info: %c:%d",root->left->pairInfo.val,root->left->pairInfo.freq);
+    if(root->right==NULL&&root->left==NULL){
+        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
+        if(root->parent!=NULL)
+            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+        else
+            printf("Parent info: NULL\n");
+        printf("Right Child info: NULL\n");
+        printf("Left Child info: NULL\n");
+        puts("");
     }
 }
 
