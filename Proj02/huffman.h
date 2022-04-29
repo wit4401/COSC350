@@ -34,6 +34,14 @@ struct qNode *newPair(struct pair newInfo){
     return newNode;
 }
 
+void deleteTree(struct treeNode **root){
+    if((*root)->left!=NULL)
+        deleteTree(&(*root)->left);
+    if((*root)->right!=NULL)
+        deleteTree(&(*root)->right);
+    free((*root));
+}
+
 //This function frees allocated memory of the appropriate element
 void pop(struct qNode **start){
     struct qNode *popped=(*start);
@@ -97,54 +105,35 @@ struct treeNode *creatTree(struct qNode *list){
 }
 
 void printTreeNodes(struct treeNode *root){
-    if(root->left!=NULL){
+    if(root->left!=NULL)
         printTreeNodes(root->left);
-        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
-        if(root->parent!=NULL)
-            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        else
-            printf("Parent info: NULL\n");
-        if(root->right!=NULL)
-            printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
-        else
-            printf("Right Child info: NULL\n");
+
+    printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
+    if(root->parent!=NULL)
+        printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
+    else
+        printf("Parent info: NULL\n");
+    if(root->left!=NULL)
         printf("Left Child info: %c:%d\n",root->left->pairInfo.val,root->left->pairInfo.freq);
-        puts("");
-    }
-    if(root->right!=NULL){
-        printTreeNodes(root->right);
-        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
-        if(root->parent!=NULL)
-            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        else
-            printf("Parent info: NULL\n");
-        printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
-        if(root->left!=NULL)
-            printf("Left Child info: %c:%d\n",root->left->pairInfo.val,root->left->pairInfo.freq);
-        else
-            printf("Left Child info: NULL\n");
-        puts("");
-    }
-    if(root->right==NULL&&root->left==NULL){
-        printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
-        if(root->parent!=NULL)
-            printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-        else
-            printf("Parent info: NULL\n");
-        printf("Right Child info: NULL\n");
+    else
         printf("Left Child info: NULL\n");
-        puts("");
-    }
+    if(root->right!=NULL)
+        printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
+    else
+        printf("Right Child info: NULL\n");
+    puts("");
+    if(root->right!=NULL)
+        printTreeNodes(root->right);
 }
 
 void printcodes(struct treeNode *root,int code[],int top){
     if(root->left!=NULL){
         code[top]=0;
-        printcodes(root->left,code,++top);
+        printcodes(root->left,code,top+1);
     }
     if(root->right!=NULL){
         code[top]=1;
-        printcodes(root->right,code,++top);
+        printcodes(root->right,code,top+1);
     }
     if(root->left==NULL && root->right==NULL){
         printf("%c:",root->pairInfo.val);
@@ -154,7 +143,20 @@ void printcodes(struct treeNode *root,int code[],int top){
     }
 }
 
-void compress(int fd,struct treeNode *root){
+int *searchHuffTree(struct treeNode *root,int arr[],int top){
+
+}
+
+void compress(int fd,struct treeNode *root,int len){
+    FILE *fptr=fopen("compressed","wb");
+    int rbytes;
+    char b;
+    while((rbytes=read(fd,&b,1))>0){
+	int *code=calloc(len,sizeof(int));
+	searchHuffTree(root,code,0);
+
+	free(code);
+    }
 }
 
 void uncompress(int fd,struct treeNode *root){

@@ -45,19 +45,16 @@ int main(int argc,char *argv[]){
     for(int i=1;i<listLen;i++)
         push(&pQueue,newPair(list[i]));
     free(list);
-
+    
     //these lines are where the compress and creatHuffTree command 
-    struct treeNode *huffTree=creatTree(pQueue);
     int *codes=calloc(listLen,sizeof(int));
+    struct treeNode *huffTree=creatTree(pQueue);
+    puts("Tree Node Info (Inorder Traversal):");
     printTreeNodes(huffTree);
     printcodes(huffTree,codes,0);
-    free(codes);
     //compress(file,huffTree);
-
-    //this frees all allocated data in the priority queue  
-    while((listLen--)>0)
-        pop(&pQueue);
-
+    
+    deleteTree(&huffTree);
     close(file);//closes the original file
     exit(0);
 }
