@@ -15,7 +15,8 @@ int main(int argc,char *argv[]){
 
     //opens the file and opens it (if not sends an error message and exits program)
     int file=open(argv[1],O_RDONLY);
-    if (file<0){
+    int compFile=open("compressed",O_CREAT | O_TRUNC | O_RDWR);
+    if (file<0||compFile){
         printf("Open Error!\n");
         exit(2);
     }
@@ -52,9 +53,11 @@ int main(int argc,char *argv[]){
     puts("Tree Node Info (Inorder Traversal):");
     printTreeNodes(huffTree);
     printcodes(huffTree,codes,0);
-    //compress(file,huffTree);
+
+    compress(compFile,file,huffTree);
     
     deleteTree(&huffTree);
     close(file);//closes the original file
+    close(compFile)
     exit(0);
 }

@@ -143,19 +143,44 @@ void printcodes(struct treeNode *root,int code[],int top){
     }
 }
 
-int *searchHuffTree(struct treeNode *root,int arr[],int top){
-
+int *searchHuffTree(struct treeNode *root,int **arr,int top,char cmp){
+    int *code=(*arr);
+    if(root->left!=NULL){
+        code=realloc(code,(top+1)sizeof(int));
+        code[top]=0;
+        searchHuffTree(root->left,&code,top+1,cmp);
+    }
+    if(root->right!=NULL){
+        code=realloc(code,(top+1)sizeof(int));
+        code[top]=1;
+        searchHuffTree(root->right,&code,top+1,cmp);
+    }
+    if(root->left==NULL && root->right==NULL){
+        if(root->pairInfo.val==cmp)
+            return (*arr);
+    }
 }
 
-void compress(int fd,struct treeNode *root,int len){
-    FILE *fptr=fopen("compressed","wb");
+void compress(int fdOut, int fdIn, struct treeNode *root){
     int rbytes;
     char b;
-    while((rbytes=read(fd,&b,1))>0){
-	int *code=calloc(len,sizeof(int));
-	searchHuffTree(root,code,0);
-
-	free(code);
+    unsigned long int pack=0;
+    int packLen=sizeof(pack);
+    int numOfBits=packLen-1;
+    while((rbytes=read(fdIn,&b,1))>0){
+	    int *code=malloc(sizeof(int));
+        searchHuffTree(root,&code,0,b);
+        for(int i=0;i<sizeof(code);i++){
+            if(code[i]==1)
+                pack=pack|(1UL<<bitCount);
+            bitCount--;
+            if(bitCount<0){
+                write(fdOut,pack,packLen);
+                bitCount=packLen-1;
+                pack=0;
+            }
+        }
+        free(code);
     }
 }
 
