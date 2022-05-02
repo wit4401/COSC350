@@ -8,18 +8,20 @@
 
 int main(int argc,char *argv[]){
     //checks that an arguement has been passed 
-	if(argc!=2){
+    if(argc!=2){
         printf("Error!\n");
         exit(1);
     }
 
     //opens the file and opens it (if not sends an error message and exits program)
-    int file=open(argv[1],O_RDONLY);
-    int compFile=open("compressed",O_CREAT | O_TRUNC | O_RDWR);
-    if (file<0||compFile){
+    umask(0000);
+    int file,compFile; 
+    file=open(argv[1],O_RDONLY);
+    if (file<0){
         printf("Open Error!\n");
-        exit(2);
+	    exit(2);
     }
+
 
     //this portion finds the values and their frequencies and stores them in a dynamic array
     struct pair *list=malloc(sizeof(struct pair));
@@ -49,15 +51,23 @@ int main(int argc,char *argv[]){
     
     //these lines are where the compress and creatHuffTree command 
     int *codes=calloc(listLen,sizeof(int));
-    struct treeNode *huffTree=creatTree(pQueue);
+    struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
     puts("Tree Node Info (Inorder Traversal):");
-    printTreeNodes(huffTree);
-    printcodes(huffTree,codes,0);
+    printTreeNodes(huffTree);//temporary function to print the Tree Node info via InOrder Traversal
+    printcodes(huffTree,codes,0);//temporary function to print out all codes for each character in the file according to the tree
+    free(codes);
 
-    compress(compFile,file,huffTree);
+    //opens the file for the data to be stored into and compresses the file
+    compFile=open("compressed", O_CREAT | O_TRUNC | O_WRONLY, 0755);
+    if (compFile<0){
+        printf("Open Error!\n");
+	    exit(3);
+    }
+
+    compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);
     close(file);//closes the original file
-    close(compFile)
+    close(compFile);
     exit(0);
 }

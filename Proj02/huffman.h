@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<limits.h>
 #include<sys/stat.h>
 #include<sys/types.h>
 
@@ -46,7 +47,6 @@ void deleteTree(struct treeNode **root){
 void pop(struct qNode **start){
     struct qNode *popped=(*start);
     (*start)=(*start)->next;
-    //free(popped->tNode);
     free(popped);
 }
 
@@ -136,51 +136,50 @@ void printcodes(struct treeNode *root,int code[],int top){
         printcodes(root->right,code,top+1);
     }
     if(root->left==NULL && root->right==NULL){
-        printf("%c:",root->pairInfo.val);
+        printf("%c(%d):",root->pairInfo.val,root->pairInfo.freq);
         for(int i=0;i<top;i++)
             printf("%d",code[i]);
         puts("");
     }
 }
 
-int *searchHuffTree(struct treeNode *root,int **arr,int top,char cmp){
-    int *code=(*arr);
+int searchHuffTree(struct treeNode *root,int *arr,int top,char cmp){
     if(root->left!=NULL){
-        code=realloc(code,(top+1)sizeof(int));
-        code[top]=0;
-        searchHuffTree(root->left,&code,top+1,cmp);
+        arr[top]=0;
+        printcodes(root->left,arr,top+1);
     }
     if(root->right!=NULL){
-        code=realloc(code,(top+1)sizeof(int));
-        code[top]=1;
-        searchHuffTree(root->right,&code,top+1,cmp);
+        arr[top]=1;
+        printcodes(root->right,arr,top+1);
     }
     if(root->left==NULL && root->right==NULL){
-        if(root->pairInfo.val==cmp)
-            return (*arr);
+    	if(cmp==root->pairInfo.val)
+	        return top;
     }
+
 }
 
-void compress(int fdOut, int fdIn, struct treeNode *root){
+void compress(struct treeNode *root, int fdIn, int fdOut){
     int rbytes;
     char b;
     unsigned long int pack=0;
     int packLen=sizeof(pack);
     int numOfBits=packLen-1;
+    lseek(fdIn,0,SEEK_SET);
+
     while((rbytes=read(fdIn,&b,1))>0){
-	    int *code=malloc(sizeof(int));
-        searchHuffTree(root,&code,0,b);
-        for(int i=0;i<sizeof(code);i++){
+	int code[INT_MAX];
+        int codeLen=searchHuffTree(root,code,0,b);
+        for(int i=0;i<codeLen;i++){
             if(code[i]==1)
-                pack=pack|(1UL<<bitCount);
-            bitCount--;
-            if(bitCount<0){
-                write(fdOut,pack,packLen);
-                bitCount=packLen-1;
+                pack=pack|(1UL<<numOfBits);
+            numOfBits--;
+            if(numOfBits<0){
+                write(fdOut,&pack,sizeof(unsigned long int));
+                numOfBits=packLen-1;
                 pack=0;
             }
         }
-        free(code);
     }
 }
 
