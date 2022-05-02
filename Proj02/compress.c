@@ -62,13 +62,13 @@ int main(int argc,char *argv[]){
     compFile=fopen("compressed","w");
     if (compFile<0){
         printf("Open Error!\n");
-	    exit(3);
+        exit(3);
     }
 
-    compress(huffTree,file,compFile);
+    //compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);
-    close(file);//closes the original file  
+    close(file);//closes the original file
     fclose(compFile);
     exit(0);
 }
