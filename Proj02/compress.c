@@ -43,13 +43,13 @@ int main(int argc,char *argv[]){
             list[listLen++].freq=1;
         }
     }
-    //creates the priority queue to put all of these 
+    //creates the priority queue to put all of these
     struct qNode *pQueue=newPair(list[0]);
     for(int i=1;i<listLen;i++)
         push(&pQueue,newPair(list[i]));
     free(list);
     
-    //these lines are where the compress and creatHuffTree command 
+    //these lines are where the compress and creatHuffTree command
     int *codes=calloc(listLen,sizeof(int));
     struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
     puts("Tree Node Info (Inorder Traversal):");
@@ -57,7 +57,7 @@ int main(int argc,char *argv[]){
     printcodes(huffTree,codes,0);//temporary function to print out all codes for each character in the file according to the tree
     free(codes);
 
-    //opens the file for the data to be stored into and compresses the file
+    //opens the file for the data to be stored into and compresses the file  
     compFile=open("compressed", O_CREAT | O_TRUNC | O_WRONLY, 0755);
     if (compFile<0){
         printf("Open Error!\n");
@@ -67,7 +67,7 @@ int main(int argc,char *argv[]){
     compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);
-    close(file);//closes the original file
+    close(file);//closes the original file  
     close(compFile);
     exit(0);
 }
