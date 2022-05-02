@@ -159,7 +159,7 @@ int searchHuffTree(struct treeNode *root,int *arr,int top,char cmp){
 
 }
 
-void compress(struct treeNode *root, int fdIn, int fdOut){
+void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     int rbytes;
     char b;
     unsigned long int pack=0;
@@ -175,7 +175,7 @@ void compress(struct treeNode *root, int fdIn, int fdOut){
                 pack=pack|(1UL<<numOfBits);
             numOfBits--;
             if(numOfBits<0){
-                write(fdOut,&pack,sizeof(unsigned long int));
+                fprintf(fdOut,"%lu",pack);
                 numOfBits=packLen-1;
                 pack=0;
             }

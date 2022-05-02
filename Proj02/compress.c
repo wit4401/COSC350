@@ -15,7 +15,8 @@ int main(int argc,char *argv[]){
 
     //opens the file and opens it (if not sends an error message and exits program)
     umask(0000);
-    int file,compFile; 
+    int file;
+    FILE *compFile; 
     file=open(argv[1],O_RDONLY);
     if (file<0){
         printf("Open Error!\n");
@@ -58,7 +59,7 @@ int main(int argc,char *argv[]){
     free(codes);
 
     //opens the file for the data to be stored into and compresses the file  
-    compFile=open("compressed", O_CREAT | O_TRUNC | O_WRONLY, 0755);
+    compFile=fopen("compressed","w");
     if (compFile<0){
         printf("Open Error!\n");
 	    exit(3);
@@ -68,6 +69,6 @@ int main(int argc,char *argv[]){
     
     deleteTree(&huffTree);
     close(file);//closes the original file  
-    close(compFile);
+    fclose(compFile);
     exit(0);
 }
