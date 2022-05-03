@@ -51,7 +51,6 @@ int main(int argc,char *argv[]){
     free(list);
     
     struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
-
     /*
     int *codes=calloc(listLen,sizeof(int));
     puts("Tree Node Info (Inorder Traversal):");

@@ -146,12 +146,16 @@ void printcodes(struct treeNode *root,int code[],int top){
 
 void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen){
     if(root->left!=NULL){
-        arr[top]=0;
-        searchHuffTree(root->left,arr,top+1,cmp,arrLen);
+        if((*arrLen)==0){
+            arr[top]=0;
+            searchHuffTree(root->left,arr,top+1,cmp,arrLen);
+        }
     }
     if(root->right!=NULL){
-        arr[top]=1;
-        searchHuffTree(root->right,arr,top+1,cmp,arrLen);
+        if((*arrLen)==0){
+            arr[top]=1;
+            searchHuffTree(root->right,arr,top+1,cmp,arrLen);
+        }
     }
     if(root->left==NULL && root->right==NULL){
     	if(cmp==root->pairInfo.val)
@@ -163,24 +167,25 @@ void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     int rbytes;
     char b;
     int codeLen=0;
+    int code[999999];
     unsigned long int pack=0;
     int packLen=sizeof(pack);
     int numOfBits=packLen-1;
     lseek(fdIn,0,SEEK_SET);
 
     while((rbytes=read(fdIn,&b,1))>0){
-	    int code[999999];
         searchHuffTree(root,code,0,b,&codeLen);
         for(int i=0;i<codeLen;i++){
             if(code[i]==1)
                 pack=pack|(1UL<<numOfBits);
             numOfBits--;
             if(numOfBits<0){
-                fwrite(&pack,packLen,packLen,fdOut);
+                fwrite(&pack,sizeof(unsigned long int),1,fdOut);
                 numOfBits=packLen-1;
                 pack=0;
             }
         }
+        codeLen=0;
     }
 }
 
