@@ -50,13 +50,15 @@ int main(int argc,char *argv[]){
         push(&pQueue,newPair(list[i]));
     free(list);
     
-    //these lines are where the compress and creatHuffTree command
-    int *codes=calloc(listLen,sizeof(int));
     struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
+
+    /*
+    int *codes=calloc(listLen,sizeof(int));
     puts("Tree Node Info (Inorder Traversal):");
     printTreeNodes(huffTree);//temporary function to print the Tree Node info via InOrder Traversal
     printcodes(huffTree,codes,0);//temporary function to print out all codes for each character in the file according to the tree
     free(codes);
+    */
 
     //opens the file for the data to be stored into and compresses the file  
     compFile=fopen("compressed","w");
@@ -65,7 +67,7 @@ int main(int argc,char *argv[]){
         exit(3);
     }
 
-    //compress(huffTree,file,compFile);
+    compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);
     close(file);//closes the original file

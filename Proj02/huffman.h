@@ -103,7 +103,7 @@ struct treeNode *creatTree(struct qNode *list){
     }
     return curr->tNode;
 }
-
+/*
 void printTreeNodes(struct treeNode *root){
     if(root->left!=NULL)
         printTreeNodes(root->left);
@@ -142,40 +142,41 @@ void printcodes(struct treeNode *root,int code[],int top){
         puts("");
     }
 }
+*/
 
-int searchHuffTree(struct treeNode *root,int *arr,int top,char cmp){
+void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen){
     if(root->left!=NULL){
         arr[top]=0;
-        printcodes(root->left,arr,top+1);
+        searchHuffTree(root->left,arr,top+1,cmp,arrLen);
     }
     if(root->right!=NULL){
         arr[top]=1;
-        printcodes(root->right,arr,top+1);
+        searchHuffTree(root->right,arr,top+1,cmp,arrLen);
     }
     if(root->left==NULL && root->right==NULL){
     	if(cmp==root->pairInfo.val)
-	        return top;
+	        *arrLen=top;
     }
-
 }
 
 void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     int rbytes;
     char b;
+    int codeLen=0;
     unsigned long int pack=0;
     int packLen=sizeof(pack);
     int numOfBits=packLen-1;
     lseek(fdIn,0,SEEK_SET);
 
     while((rbytes=read(fdIn,&b,1))>0){
-	int code[INT_MAX];
-        int codeLen=searchHuffTree(root,code,0,b);
+	    int code[999999];
+        searchHuffTree(root,code,0,b,&codeLen);
         for(int i=0;i<codeLen;i++){
             if(code[i]==1)
                 pack=pack|(1UL<<numOfBits);
             numOfBits--;
             if(numOfBits<0){
-                fprintf(fdOut,"%lu",pack);
+                fwrite(&pack,packLen,packLen,fdOut);
                 numOfBits=packLen-1;
                 pack=0;
             }
