@@ -165,10 +165,10 @@ void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen)
 }
 
 void saveHuffTree(struct treeNode *root,FILE *fdOut){
-    if(root->left!=NULL){
-        saveHuffTree(root->left,code,top+1);
-    if(root->right!=NULL){
-        saveHuffTree(root->right,code,top+1);
+    if(root->left!=NULL)
+        saveHuffTree(root->left,fdOut);
+    if(root->right!=NULL)
+        saveHuffTree(root->right,fdOut);
     if(root->left==NULL && root->right==NULL){
         return;
     }
