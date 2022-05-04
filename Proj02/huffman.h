@@ -58,6 +58,16 @@ void printQueue(struct qNode *start){
     }
 }
 
+int searchQueue(struct qNode *start,char cmp){
+    struct qNode *curr=start;
+    while(curr!=NULL){
+        if(curr->tNode->pairInfo.val==cmp)
+            return 0;
+        curr=curr->next;
+    }
+    return 1;
+}
+
 //We must utilize the address of the pair structure instead of storing it into another
 //temporary variable to be returned. This will modify it directly which is what is
 //needed to build priority queue which is required to build the huffman coding tree
@@ -164,13 +174,12 @@ void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen)
     }
 }
 
-void saveHuffTree(struct treeNode *root,FILE *fdOut){
-    if(root->left!=NULL)
-        saveHuffTree(root->left,fdOut);
-    if(root->right!=NULL)
-        saveHuffTree(root->right,fdOut);
-    if(root->left==NULL && root->right==NULL){
-        return;
+void saveFreqs(struct qNode *start,FILE *fdOut){
+    struct qNode *curr=start;
+    while(curr!=NULL){
+        fwrite(&curr->tNode->pairInfo.val,sizeof(char),1,fdOut);
+        fwrite(&curr->tNode->pairInfo.freq,sizeof(int),1,fdOut);
+        curr=curr->next;
     }
 }
 

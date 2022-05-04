@@ -49,8 +49,17 @@ int main(int argc,char *argv[]){
     for(int i=1;i<listLen;i++)
         push(&pQueue,newPair(list[i]));
     free(list);
-    
+
+    //creates the compressed file
+    compFile=fopen("compressed","w");
+    if (compFile<0){
+        printf("Open Error!\n");
+        exit(3);
+    }
+    //saveFreqs(pQueue,compFile);//saves the values and frequencies in order to uncompress later
+
     struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
+    
     /*
     int *codes=calloc(listLen,sizeof(int));
     puts("Tree Node Info (Inorder Traversal):");
@@ -59,19 +68,11 @@ int main(int argc,char *argv[]){
     free(codes);
     */
 
-    //opens the file for the data to be stored into and compresses the file  
-    compFile=fopen("compressed","w");
-    if (compFile<0){
-        printf("Open Error!\n");
-        exit(3);
-    }
-
     //writes appropriate contents into the file
-    //saveHuffTree(huffTree,compFile);
     compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);
     close(file);//closes the original file
-    fclose(compFile);
+    fclose(compFile);//closes the compressed version of the file
     exit(0);
 }
