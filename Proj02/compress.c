@@ -67,7 +67,7 @@ int main(int argc,char *argv[]){
     }
 
     //writes appropriate contents into the file
-    saveHuffmanTree(huffTree,compFile);
+    saveHuffTree(huffTree,compFile);
     compress(huffTree,file,compFile);
     
     deleteTree(&huffTree);

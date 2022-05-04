@@ -166,11 +166,11 @@ void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen)
 
 void saveHuffTree(struct treeNode *root,FILE *fdOut){
     if(root->left!=NULL){
-        printcodes(root->left,code,top+1);
+        saveHuffTree(root->left,code,top+1);
     if(root->right!=NULL){
-        printcodes(root->right,code,top+1);
+        saveHuffTree(root->right,code,top+1);
     if(root->left==NULL && root->right==NULL){
-        fwrite(&root->pairInfo.val);
+        return;
     }
 }
 
