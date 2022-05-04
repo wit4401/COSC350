@@ -103,6 +103,7 @@ struct treeNode *creatTree(struct qNode *list){
     }
     return curr->tNode;
 }
+
 /*
 void printTreeNodes(struct treeNode *root){
     if(root->left!=NULL)
@@ -163,6 +164,16 @@ void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen)
     }
 }
 
+void saveHuffTree(struct treeNode *root,FILE *fdOut){
+    if(root->left!=NULL){
+        printcodes(root->left,code,top+1);
+    if(root->right!=NULL){
+        printcodes(root->right,code,top+1);
+    if(root->left==NULL && root->right==NULL){
+        fwrite(&root->pairInfo.val);
+    }
+}
+
 void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     int rbytes;
     char b;
@@ -180,7 +191,7 @@ void compress(struct treeNode *root, int fdIn, FILE *fdOut){
                 pack=pack|(1UL<<numOfBits);
             numOfBits--;
             if(numOfBits<0){
-                fwrite(&pack,sizeof(unsigned long int),1,fdOut);
+                fwrite(&pack,1,1,fdOut);
                 numOfBits=packLen-1;
                 pack=0;
             }
