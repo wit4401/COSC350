@@ -12,9 +12,8 @@ int main(){
 	pipe(PtoC);
 	switch (pid){
 		case -1:
-
+			exit(1);
 		case 0:
-			waitpid(getppid(),);
 			_exit()
 		default:
 			exit();
