@@ -18,3 +18,6 @@ unhuffing program.
   * Read the compressed text and the binary Huffman coding in the binary tree from the compressed file.
   * Reconstruct the binary Huffman coding tree from the information read from the file.
   * Use Huffman coding binary tree to create the original text file from the compressed original file.
+## Note
+I was unable to complete the uncompression portion the project in time for the turn in date. However, I plan to come back and complete it in my spare
+time at some point.
