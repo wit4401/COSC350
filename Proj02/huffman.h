@@ -6,11 +6,13 @@
 #include<sys/stat.h>
 #include<sys/types.h>
 
+//structure to construct represent a character-frequency pair
 struct pair{
     int freq;
     char val;
 };
 
+//structure that represents a node on the tree
 struct treeNode{
     struct treeNode *parent;
     struct treeNode *left;
@@ -18,6 +20,7 @@ struct treeNode{
     struct pair pairInfo;
 };
 
+//allows us to construct a queue of the treeNode type
 struct qNode{
     struct qNode *next;
     struct treeNode *tNode;
@@ -35,6 +38,7 @@ struct qNode *newPair(struct pair newInfo){
     return newNode;
 }
 
+//frees the data from the huffman coding tree
 void deleteTree(struct treeNode **root){
     if((*root)->left!=NULL)
         deleteTree(&(*root)->left);
@@ -48,24 +52,6 @@ void pop(struct qNode **start){
     struct qNode *popped=(*start);
     (*start)=(*start)->next;
     free(popped);
-}
-
-void printQueue(struct qNode *start){
-    struct qNode *curr=start;
-    while(curr!=NULL){
-        printf("%c:%d\n",curr->tNode->pairInfo.val,curr->tNode->pairInfo.freq);
-        curr=curr->next;
-    }
-}
-
-int searchQueue(struct qNode *start,char cmp){
-    struct qNode *curr=start;
-    while(curr!=NULL){
-        if(curr->tNode->pairInfo.val==cmp)
-            return 0;
-        curr=curr->next;
-    }
-    return 1;
 }
 
 //We must utilize the address of the pair structure instead of storing it into another
@@ -85,6 +71,7 @@ void push(struct qNode **start,struct qNode *newNode){
     }
 }
 
+//function creates the huffman coding tree to be utilized in the compression process
 struct treeNode *creatTree(struct qNode *list){
     struct qNode *curr=list;
     while(curr->next!=NULL){
@@ -114,47 +101,8 @@ struct treeNode *creatTree(struct qNode *list){
     return curr->tNode;
 }
 
-/*
-void printTreeNodes(struct treeNode *root){
-    if(root->left!=NULL)
-        printTreeNodes(root->left);
-
-    printf("Node info: %c:%d\n",root->pairInfo.val,root->pairInfo.freq);
-    if(root->parent!=NULL)
-        printf("Parent info: %c:%d\n",root->parent->pairInfo.val,root->parent->pairInfo.freq);
-    else
-        printf("Parent info: NULL\n");
-    if(root->left!=NULL)
-        printf("Left Child info: %c:%d\n",root->left->pairInfo.val,root->left->pairInfo.freq);
-    else
-        printf("Left Child info: NULL\n");
-    if(root->right!=NULL)
-        printf("Right Child info: %c:%d\n",root->right->pairInfo.val,root->right->pairInfo.freq);
-    else
-        printf("Right Child info: NULL\n");
-    puts("");
-    if(root->right!=NULL)
-        printTreeNodes(root->right);
-}
-
-void printcodes(struct treeNode *root,int code[],int top){
-    if(root->left!=NULL){
-        code[top]=0;
-        printcodes(root->left,code,top+1);
-    }
-    if(root->right!=NULL){
-        code[top]=1;
-        printcodes(root->right,code,top+1);
-    }
-    if(root->left==NULL && root->right==NULL){
-        printf("%c(%d):",root->pairInfo.val,root->pairInfo.freq);
-        for(int i=0;i<top;i++)
-            printf("%d",code[i]);
-        puts("");
-    }
-}
-*/
-
+//this allows us to put the code for an associated with its proper value (is a recursive function and utilizes
+//the address to directly affect the array and its length
 void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen){
     if(root->left!=NULL){
         if((*arrLen)==0){
@@ -174,15 +122,8 @@ void searchHuffTree(struct treeNode *root,int *arr,int top,char cmp,int *arrLen)
     }
 }
 
-void saveFreqs(struct qNode *start,FILE *fdOut){
-    struct qNode *curr=start;
-    while(curr!=NULL){
-        fwrite(&curr->tNode->pairInfo.val,sizeof(char),1,fdOut);
-        fwrite(&curr->tNode->pairInfo.freq,sizeof(int),1,fdOut);
-        curr=curr->next;
-    }
-}
-
+//actually writes the necessary binaary data into the file to create the compressed file
+//using a long unsigned int
 void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     int rbytes;
     char b;
@@ -209,5 +150,6 @@ void compress(struct treeNode *root, int fdIn, FILE *fdOut){
     }
 }
 
+//unbuilt uncompressed function
 void uncompress(int fd,struct treeNode *root){
 }

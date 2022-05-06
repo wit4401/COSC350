@@ -52,21 +52,12 @@ int main(int argc,char *argv[]){
 
     //creates the compressed file
     compFile=fopen("compressed","w");
-    if (compFile<0){
+    if (compFile==NULL){
         printf("Open Error!\n");
         exit(3);
     }
-    //saveFreqs(pQueue,compFile);//saves the values and frequencies in order to uncompress later
 
     struct treeNode *huffTree=creatTree(pQueue);//creates an stores the huffTree to be used in the compression process
-    
-    /*
-    int *codes=calloc(listLen,sizeof(int));
-    puts("Tree Node Info (Inorder Traversal):");
-    printTreeNodes(huffTree);//temporary function to print the Tree Node info via InOrder Traversal
-    printcodes(huffTree,codes,0);//temporary function to print out all codes for each character in the file according to the tree
-    free(codes);
-    */
 
     //writes appropriate contents into the file
     compress(huffTree,file,compFile);
