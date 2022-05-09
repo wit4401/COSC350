@@ -15,12 +15,12 @@ void handler(int signo){
 	int rNum1=0;
 	int rNum2=rNum1;
 	int check=0;
-	while((rbytes=read(PtoC[0],&b,1))>0){
+	while((rbytes=read(PtoC[0],&b,1))!=EOF){
 		if(b!=' '){
 			if(check){
 				if(isdigit(b)){
 					rNum2*=10;
-					rNum2+=atoi(b);
+					rNum2+=atoi(&b);
 				}
 				else{
 					puts("Error! 2nd input not an integer");
@@ -30,7 +30,7 @@ void handler(int signo){
 			else{
 				if(isdigit(b)){
 					rNum1*=10;
-					rNum1+=atoi(b);
+					rNum1+=atoi(&b);
 				}
 				else{
 					puts("Error! 1st input not an integer");
@@ -52,7 +52,8 @@ int main(){
 	pid=fork();
 	//parent process
 	if(pid>0){
-		char *strNum1,*strNum2;
+		char *strNum1=malloc(sizeof(char));
+		char *strNum2=malloc(sizeof(char));
 		close(PtoC[0]);
 		printf("Enter a integer: ");
 		scanf("%d",&num1);
