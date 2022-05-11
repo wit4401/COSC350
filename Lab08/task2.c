@@ -1,3 +1,8 @@
+/*********************
+|    Lab 8 Task 2    |
+|    Will Townsend   |
+|      May 2022      |
+*********************/
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
