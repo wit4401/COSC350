@@ -10,30 +10,27 @@
 #include<sys/types.h>
 #include<sys/wait.h>
 
-FILE *pFd,*cFd;
+#define STRLEN 80
 
-int main(){
-    char shellStr[1024];
-    char fileName[1024];
-    pid_t pid;
+int main(int argc, char** argv){
+    int i, j;
+    int size=0;
+    char* shellCommand;
+    for(i=1; i<argc; i++){
+        size+=strlen(argv[i]);
+    }
 
-    printf("Enter a shell command: ");
-    scanf("%s",shellStr);
-    printf("Enter a file name: ");
-    scanf("%s",fileName);
-    
-    pid=fork();
-    if(pid>0){
-        pFd=popen(shellStr,"w");
-        fwrite(fileName,sizeof(char),strlen(fileName),pFd);
+    shellCommand=malloc(size*sizeof(char));
 
+    for(i=1; i<argc; i++)
+        sprintf(shellCommand, "%s %s", shellCommand, argv[i]);
+
+    char buffer[BUFSIZ];
+    FILE* ptr;
+    if((ptr=popen(shellCommand, "r")) != NULL){
+        while(fgets(buffer, BUFSIZ, ptr) != NULL)
+            (void)printf("%s",buffer);
     }
-    else if (pid==0){
-        cFd=popen(shellStr,"r");
-    }
-    else{
-        puts("fork() error");
-        exit(1);
-    }
+    pclose(ptr);
     exit(0);
 }
