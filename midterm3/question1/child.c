@@ -5,17 +5,20 @@
 #include<sys/stat.h>
 
 int main(int argc,char *argv[]){
+	int num1,num2;
 	if(argv[1][0]=='-'){
-		int num1=atoi(argv[2]);
-		int num2=atoi(argv[3]);
-		printf("%d\n",num1-num2);
+		num1=atoi(argv[2]);
+		num2=atoi(argv[3]);
+		printf("%d - %d = %d\n",num1,num2,num1-num2);
 	}
 	else if(argv[1][0]=='+'){
-		int num1=atoi(argv[2]);
-		int num2=atoi(argv[3]);
-		printf("%d\n",num1+num2);
+		num1=atoi(argv[2]);
+		num2=atoi(argv[3]);
+		printf("%d + %d = %d\n",num1,num2,num1+num2);
 	}
-	else
+	else{
 		puts("Error!");
+		_exit(1);
+	}
 	_exit(0);
 }
