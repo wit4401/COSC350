@@ -8,8 +8,7 @@
 #include<string.h>
 #include<ctype.h>
 #include<unistd.h>
-#include<fcntl.h>
-#include<sys/types.h>
+#include<signal.h>
 #include<sys/wait.h>
 
 int PtoC[2];
@@ -20,33 +19,8 @@ void handler(int signo){
 	int rNum1=0;
 	int rNum2=rNum1;
 	int check=0;
-	while((rbytes=read(PtoC[0],&b,1))){
-		if(b!=' '){
-			if(check){
-				if(isdigit(b)){
-					rNum2*=10;
-					rNum2+=atoi(&b);
-				}
-				else{
-					puts("Error! 2nd input not an integer");
-					_exit(2);
-				}
-			}
-			else{
-				if(isdigit(b)){
-					rNum1*=10;
-					rNum1+=atoi(&b);
-				}
-				else{
-					puts("Error! 1st input not an integer");
-					_exit(1);
-				}
-			}
-		}
-		else
-			check=1;
-	}
-	printf("Sum of inputs: %d\n",rNum1+rNum2);
+	printf("Sum of integers: %d\n",rNum1+rNum2);
+	_exit(0);
 }
 
 int main(int argc,char *argv[]){
@@ -60,6 +34,7 @@ int main(int argc,char *argv[]){
 		write(PtoC[1]," ",1);
 		write(PtoC[1],argv[2],strlen(argv[2]));
 		kill(pid,SIGUSR1);
+		wait(NULL);
 		exit(0);
 	}
 	//child process
@@ -67,11 +42,10 @@ int main(int argc,char *argv[]){
 		close(PtoC[1]);
 		signal(SIGUSR1,handler);
 		pause();
-		_exit(0);
 	}
 	//fork() error
 	else{
-		puts("Fork Error!");
+		puts("fork() Error!");
 		exit(1);
 	}
 }
