@@ -11,20 +11,21 @@
 #include<sys/wait.h>
 #include<pthread.h>
 
-pthread_t thread1,thread2,thread3,thread4;
-int scores[20];
+int scores[20]; //global array of scores
 int numOfScores=0;
 
+//action of the first thread (grabs user input for the score)
 void *getScores(void *arg){
 	int score=0;
 	while(numOfScores!=20&&score>=0){
-		printf("Enter a score (max of 20 and -1 to stop): ");
+		printf("Enter a score #%d(max of 20 and -1 to stop): ",numOfScores);
 		scanf("%d",&score);
 		if(score>=0)
 			scores[numOfScores++]=score;
 	}
 }
 
+//action of the second thread (finds the average and meadian score) works simultaneously with thread 3
 void *avgMedianScore(void *arg){
 	int avg=0;
 	for(int i=0;i<numOfScores;i++)
@@ -33,6 +34,7 @@ void *avgMedianScore(void *arg){
 	printf("Median: %d\n",scores[(numOfScores/2)-1]);
 }
 
+//action of the third thread (finds min and max score) works simultaneously with thread 2
 void *minMaxScores(void *arg){
 	int min=9999999;
 	int max=-9999999;
@@ -46,6 +48,7 @@ void *minMaxScores(void *arg){
 	printf("Minimum: %d\n",min);
 }
 
+//action of the fourth thread (clears the array)
 void *clearBuffer(void *arg){
 	for(int i=0;i<numOfScores;i++)
 		scores[i]=0;
@@ -53,7 +56,8 @@ void *clearBuffer(void *arg){
 }
 
 int main(){
-	pthread_create(&thread1,NULL,getScores,NULL);
+	pthread_t thread1,thread2,thread3,thread4;
+	pthread_create(&thread1,NULL,getScores,NULL);//creates thread 1
 	pthread_join(thread1,NULL);//waits for thread 1 to exit
 	pthread_create(&thread2,NULL,avgMedianScore,NULL);//creates thread 2
 	pthread_create(&thread3,NULL,minMaxScores,NULL);//create thread 3
