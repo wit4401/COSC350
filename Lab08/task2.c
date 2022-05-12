@@ -18,7 +18,7 @@ int numOfScores=0;
 void *getScores(void *arg){
 	int score=0;
 	while(numOfScores!=20&&score>=0){
-		printf("Enter a score #%d(max of 20 and -1 to stop): ",numOfScores);
+		printf("Enter a score #%d(max of 20 and -1 to stop): ",numOfScores+1);
 		scanf("%d",&score);
 		if(score>=0)
 			scores[numOfScores++]=score;
@@ -31,7 +31,7 @@ void *avgMedianScore(void *arg){
 	for(int i=0;i<numOfScores;i++)
 		avg+=scores[i];
 	printf("Avgerage: %d\n",avg/numOfScores);
-	printf("Median: %d\n",scores[(numOfScores/2)-1]);
+	printf("Median: %d\n",scores[(numOfScores/2)]);
 }
 
 //action of the third thread (finds min and max score) works simultaneously with thread 2
