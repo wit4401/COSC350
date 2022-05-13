@@ -6,23 +6,35 @@
 #include<sys/stat.h>
 #include<sys/types.h>
 
-int main(int argc,char *argv[]){
-	pid_t pid;
-	pid=fork();
-	if(pid==-1){
-		puts("fork() error");
-		exit(1);
+int numLen(int num){
+	int len=0;
+	while(num!=0){
+		num/=10;
+		len++;
 	}
-	else if(pid==0)
-		execl("/mnt/linuxlab/home/wtownsend2/COSC350/midterm3/question1/child","./child","+",argv[1],argv[2],NULL);
+	return len;
+}
 
-	pid_t pid2=fork();
-	if(pid2==-1){
-		puts("fork() error");
-		exit(1);
-	}
-	else if(pid2==0)
-		execl("/mnt/linuxlab/home/wtownsend2/COSC350/midterm3/question1/child","./child","-",argv[1],argv[2],NULL);
+int main(){
+	int num1,num2;
+	char *str1,*str2;
+	pid_t pid,pid2;
+
+	scanf("%d",&num1);
+	scanf("%d",&num2);
+	
+	str1=malloc(numLen(num1)*sizeof(char));
+	str2=malloc(numLen(num2)*sizeof(char));
+	sprintf(str1,"%d",num1);
+	sprintf(str2,"%d",num2);
+
+	pid=fork();
+	if(pid==0)
+		execl("/Users/williamtownsend/Desktop/SchoolWork/Spring2022/COSC350/midterm3/question1/child","./child","+",str1,str2,NULL);
+	
+	pid2=fork();
+	if(pid2==0)
+		execl("/Users/williamtownsend/Desktop/SchoolWork/Spring2022/COSC350/midterm3/question1/child","./child","-",str1,str2,NULL);
 	else{
 		waitpid(pid2,NULL,0);
 		exit(0);
