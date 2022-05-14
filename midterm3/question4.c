@@ -32,12 +32,16 @@ int main(int argc,char *argv[]){
 	pthread_create(&thread1,NULL,func1,(void *) argv[1]);
 	pthread_join(thread1,NULL);
 
+	printf("After thread 1: %d\n",result);
+
 	pthread_create(&thread2,NULL,func2,NULL);
 	pthread_join(thread2,NULL);
+
+	printf("After thread 2: %d\n",result);
 
 	pthread_create(&thread3,NULL,func3,NULL);
 	pthread_join(thread3,NULL);
 	
-	printf("Ending Value: %d\n",result);
+	printf("After thread 3: %d\n",result);
 	pthread_exit(NULL);
 }

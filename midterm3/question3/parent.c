@@ -16,9 +16,7 @@ void handler(int signo){
 }
 
 void handler2(int signo){
-	execl("/mnt/linuxlab/home/wtownsend2/COSC350/midterm3/question3/child", "./child",fd,NULL);
-	signal(SIGUSR1,handler2);
-	pause();
+	execl("/Users/williamtownsend/Desktop/SchoolWork/Spring2022/COSC350/midterm3/question3/child", "./child",fd,NULL);
 }
 
 int main(){
@@ -30,8 +28,10 @@ int main(){
 			exit(1);
 		case 0:
 			close(parentPipe[1]);
-			sprintf(fd,"%d",parentPipe[0]);
 			signal(SIGUSR1,handler2);
+			sprintf(fd,"%d",parentPipe[0]);
+			while(1)
+				pause();
 		default:
 			close(parentPipe[0]);
 			signal(SIGALRM,handler);

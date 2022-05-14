@@ -5,7 +5,8 @@
 #include<fcntl.h>
 
 int main(int argc,char *argv[]){
-	char buff[16];
-	read(atoi(argv[1]),buff,16);
-	write(1,buff,16);
+	char buff;
+	while((read(atoi(argv[1]),&buff,1))>0){
+		write(1,&buff,1);
+	}
 }
